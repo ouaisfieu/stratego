@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full bg-[#f8f6f0]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse de l'Écosystème Média Tactique : Ouaisfieu & Yannkeep</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome CDN for Font Icons (No SVG) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        warmbg: '#f8f6f0',
+                        warmcard: '#ffffff',
+                        warmsurface: '#f0ede6',
+                        crimson: {
+                            50: '#fdf2f2',
+                            100: '#fde8e8',
+                            600: '#c81e1e',
+                            700: '#9b1c1c',
+                            800: '#8c3a2b',
+                            900: '#771d1d',
+                        },
+                        steel: {
+                            50: '#f0f5fa',
+                            600: '#2b5b8c',
+                            700: '#1e4066',
+                            800: '#16304d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .tab-btn.active {
+            border-bottom: 3px solid #8c3a2b;
+            color: #8c3a2b;
+            font-weight: 700;
+            background-color: #f0ede6;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f0ede6;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-[#f8f6f0] flex flex-col min-h-screen">
+
+    <!-- Chosen Palette: Warm Neutrals & Crimson Steel (Background #f8f6f0, Surface #f0ede6, Card #ffffff, Accent Terracotta/Crimson #8c3a2b, Accent Steel Blue #2b5b8c) -->
+
+    <!-- Application Structure Plan:
+        1. Header & Global Navigation: Clean, modern bar allowing quick tab switching between 6 logical themes:
+           - Vue d'Ensemble & Diagnostic (Global KPI, Executive Summary, Verdict Radar)
+           - Cartographie Forensique (Interactive breakdown of the 5 domains and OpSec architecture)
+           - Laboratoire & Simulateurs (Interactive, working JS implementations of TRAP, Le Scrutin, and Le Grand Soir/IRI)
+           - Contexte Sociopolitique (The 5 belligerent fronts in Belgium 2025-2026 with Social vs Fiscal Fraud chart)
+           - Doctrine Opérationnelle (3 Citizen Wars, Lead-Dexing, AI RaVAEn, Ping Ultime)
+           - Évaluation Théorique (Michel de Certeau & Lovink/Garcia comparison matrix and conclusion)
+        2. Introductory Sections: Each major view features a rich contextual overview explaining what source data is presented and how to interact with it.
+        3. Interactive Components:
+           - Live Simulators with real-time recalculation (TRAP unemployment cliff calculator, Le Scrutin coalition calculator, IRI weighted gauge).
+           - Interactive filtering table for ecosystem domains.
+           - Chart.js dynamic visuals for compliance, fraud ratios, coalition distributions, and weighted indices.
+        4. User Flow Rationale: Designed to lead the user from global diagnostic to technical evidence, active testing through simulators, contextual understanding of Belgian politics, operational tactics, and finally theoretical conclusions.
+    -->
+
+    <!-- Visualization & Content Choices:
+        - Diagnostic Radar Chart: Chart.js Radar comparing Tactical Media criteria (DIY, No Own Location, Culture Jamming, Institutional Ambition, Scalability). Goal: Compare theory vs reality.
+        - Fraude Sociale vs Fiscale: Chart.js Bar Chart contrasting 200M€ vs 30.4Mrd€. Goal: Demonstrate media framing asymmetry exposed by the ecosystem.
+        - Indice IRI Gauge: Chart.js Doughnut Chart with real-time dynamic JS update driven by user sliders. Goal: Interactive simulation of state fragility.
+        - Scrutin Coalition Breakdown: Chart.js Pie/Doughnut Chart showing valid vs excluded coalitions out of 206 total. Goal: Visualize institutional closure.
+        - Confirming NO SVG elements (FontAwesome CSS icons used instead) and NO Mermaid JS.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Top Header -->
+    <header class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-lg bg-[#8c3a2b] flex items-center justify-center text-white font-bold text-xl shadow">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-900 leading-tight">Écosystème Média Tactique</h1>
+                        <p class="text-xs text-gray-500 hidden sm:block">Analyse Forensique & Démocratique « Ouaisfieu » / « Yannkeep » (Belgique 2025-2026)</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
+                        <i class="fa-solid fa-[#8c3a2b] mr-1 text-xs"></i> Statut : Post-Média Stratégique
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Bar -->
+        <nav class="bg-[#f0ede6] border-t border-b border-gray-200 overflow-x-auto custom-scrollbar">
+            <div class="max-w-7xl mx-auto px-2 flex space-x-1 sm:space-x-4 min-w-max">
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-3 py-2.5 text-xs sm:text-sm font-medium transition-colors duration-150 flex items-center space-x-2">
+                    <i class="fa-solid fa-chart-pie text-gray-600"></i>
+                    <span>Diagnostic Global</span>
+                </button>
+                <button onclick="switchTab('cartography')" id="tab-cartography" class="tab-btn px-3 py-2.5 text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-150 flex items-center space-x-2">
+                    <i class="fa-solid fa-sitemap"></i>
+                    <span>Cartographie de l'Écosystème</span>
+                </button>
+                <button onclick="switchTab('simulators')" id="tab-simulators" class="tab-btn px-3 py-2.5 text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-150 flex items-center space-x-2">
+                    <i class="fa-solid fa-calculator text-amber-700"></i>
+                    <span>Simulateurs Interactifs</span>
+                </button>
+                <button onclick="switchTab('context')" id="tab-context" class="tab-btn px-3 py-2.5 text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-150 flex items-center space-x-2">
+                    <i class="fa-solid fa-[#2b5b8c]"></i>
+                    <span>Contexte Sociopolitique</span>
+                </button>
+                <button onclick="switchTab('doctrine')" id="tab-doctrine" class="tab-btn px-3 py-2.5 text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-150 flex items-center space-x-2">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Guérilla Sémantique</span>
+                </button>
+                <button onclick="switchTab('theory')" id="tab-theory" class="tab-btn px-3 py-2.5 text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-150 flex items-center space-x-2">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                    <span>Matrice Théorique</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- SECTION 1: DASHBOARD / DIAGNOSTIC GLOBAL -->
+        <section id="sec-dashboard" class="space-y-6">
+            <!-- Contextual Introduction -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div class="flex items-start justify-between flex-col md:flex-row gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                            <i class="fa-solid fa-microscope text-[#8c3a2b]"></i>
+                            Synthèse Diagnostique de l'Écosystème
+                        </h2>
+                        <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                            Bienvenue dans la plateforme d'exploration de l'étude forensique sur l'infrastructure numérique « <strong>Ouaisfieu</strong> » et « <strong>Yannkeep</strong> ». Ce rapport interactif évalue si ce réseau belge (totalisant plus de 230 pages documentées sur 5 domaines interconnectés) relève de la définition stricte du <em>Média Tactique</em> (théorisée par Garcia, Lovink et Michel de Certeau) ou s'il préfigure une mutation vers un <em>Post-Média Stratégique</em>.
+                        </p>
+                    </div>
+                    <div class="bg-[#f0ede6] p-3 rounded-lg text-xs text-gray-700 min-w-[240px] border border-gray-300">
+                        <div class="font-bold text-[#8c3a2b] border-b border-gray-300 pb-1 mb-1">
+                            <i class="fa-solid fa-circle-info"></i> Repères Clés
+                        </div>
+                        <div>• <strong>Période observée :</strong> 2025 - 2026</div>
+                        <div>• <strong>Localisation :</strong> Wallonie-Bruxelles</div>
+                        <div>• <strong>Coût opérationnel :</strong> ~29 € / mois</div>
+                        <div>• <strong>Licence globale :</strong> CC BY-NC 4.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-[#8c3a2b] border-y border-r border-gray-200">
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Verdict Diagnostique</div>
+                    <div class="text-lg font-extrabold text-gray-900 mt-1">Hybride / Post-Média</div>
+                    <p class="text-xs text-gray-600 mt-1">Ancrage tactique fort mais ambition institutionnelle et armement algorithmique pérennes.</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-[#2b5b8c] border-y border-r border-gray-200">
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Volume Documentaire</div>
+                    <div class="text-2xl font-extrabold text-[#2b5b8c] mt-1">> 230 Pages</div>
+                    <p class="text-xs text-gray-600 mt-1">Réparties sur 5 domaines maillés (Grav CMS, Hugo, GitHub Pages, SPA client).</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-amber-600 border-y border-r border-gray-200">
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Outil Majeur d'Inversion</div>
+                    <div class="text-lg font-bold text-amber-800 mt-1">Lead-Dexing & IA</div>
+                    <p class="text-xs text-gray-600 mt-1">Génération automatisée de micro-data JSON-LD par agents IA RaVAEn pour détourner le SEO.</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-emerald-600 border-y border-r border-gray-200">
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Front Juridique Pivot</div>
+                    <div class="text-lg font-bold text-emerald-800 mt-1">Loi Quintin</div>
+                    <p class="text-xs text-gray-600 mt-1">Réponse asymétrique face aux menaces de dissolution administrative sans juge.</p>
+                </div>
+            </div>
+
+            <!-- Diagnostic Visualization & Summary Columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Radar Chart Container -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-gray-900 mb-1 flex items-center justify-between">
+                            <span><i class="fa-solid fa-chart-radar text-[#8c3a2b] mr-2"></i>Conformité aux Critères du Média Tactique</span>
+                            <span class="text-xs font-normal bg-[#f0ede6] px-2 py-1 rounded text-gray-600">Théorie vs Réalité Ouaisfieu</span>
+                        </h3>
+                        <p class="text-xs text-gray-500 mb-4">
+                            Ce graphique en radar confronte l'écosystème aux principes théoriques fondateurs de Garcia & Lovink (1997) et de Michel de Certeau (1980).
+                        </p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="radarDiagnosticChart"></canvas>
+                    </div>
+                    <div class="mt-4 bg-[#f8f6f0] p-3 rounded-lg text-xs text-gray-600 border border-gray-200">
+                        <strong>Légende :</strong> Un score élevé sur l'<em>Ambition Institutionnelle</em> et la <em>Pérennité du Code</em> indique un dépassement du média tactique classique (normalement éphémère et basé sur le hit-and-run).
+                    </div>
+                </div>
+
+                <!-- Strategic Summary Cards -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                        <h4 class="font-bold text-gray-900 text-sm mb-2 flex items-center text-[#8c3a2b]">
+                            <i class="fa-solid fa-check-circle mr-2"></i>Pourquoi il releve du Média Tactique :
+                        </h4>
+                        <ul class="text-xs text-gray-700 space-y-2 list-disc pl-4">
+                            <li><strong>Économie du DIY (Do-It-Yourself) :</strong> Exploitation d'infrastructures gratuites (GitHub Pages, Hugo, Grav) pour un coût dérisoire (~29€/mois).</li>
+                            <li><strong>Absence de « Lieu Propre » (de Certeau) :</strong> Hébergement en tant que locataire sur les serveurs de géants technologiques (Microsoft/GitHub).</li>
+                            <li><strong>Pastiche & Culture Jamming :</strong> Le site <code>ccplc.eu</code> parodie un rapport de renseignement pour tourner en dérision la rhétorique anxiogène de l'État.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                        <h4 class="font-bold text-gray-900 text-sm mb-2 flex items-center text-[#2b5b8c]">
+                            <i class="fa-solid fa-arrow-up-right-dots mr-2"></i>Pourquoi il le Dépasse (Post-Média) :
+                        </h4>
+                        <ul class="text-xs text-gray-700 space-y-2 list-disc pl-4">
+                            <li><strong>Ambition de Perennisation :</strong> Processus de reconnaissance officielle en tant qu'organisme d'Éducation Permanente (visé pour le 31 mars 2026).</li>
+                            <li><strong>Simulateurs Civiques Rigoureux :</strong> Modélisation mathématique impartiale de l'appareil d'État (Le Scrutin, TRAP, IRI) créant des communs durables.</li>
+                            <li><strong>Ingénierie Algorithmique Massive :</strong> Utilisation d'IA génératives (RaVAEn) pour orchestrer une cyberguerre sémantique à grande échelle.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 2: CARTOGRAPHIE FORENSIQUE -->
+        <section id="sec-cartography" class="hidden space-y-6">
+            <!-- Contextual Intro -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <i class="fa-solid fa-sitemap text-[#2b5b8c]"></i>
+                    Architecture Forensique de l'Écosystème Numérique
+                </h2>
+                <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                    L'analyse forensique révèle que l'écosystème ne s'appuie pas sur un blog centralisé, mais sur une architecture résiliente et cloisonnée de 5 domaines maillés. Cliquez sur les filtres pour examiner le rôle opérationnel, les technologies utilisées, l'OpSec (sécurité opérationnelle) et la politique d'indexation de chaque nœud du réseau.
+                </p>
+                
+                <!-- Filter Buttons -->
+                <div class="flex flex-wrap gap-2 mt-4">
+                    <button onclick="filterDomains('all')" class="domain-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#8c3a2b] text-white transition">
+                        Tous les domaines (5)
+                    </button>
+                    <button onclick="filterDomains('public')" class="domain-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+                        Vitrine Publique & Pédagogique
+                    </button>
+                    <button onclick="filterDomains('tech')" class="domain-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+                        Arsenal Technique & Simulateurs
+                    </button>
+                    <button onclick="filterDomains('shadow')" class="domain-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+                        Hub Analyste & Laboratoire Souterrain
+                    </button>
+                </div>
+            </div>
+
+            <!-- Domains Grid -->
+            <div id="domainsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Domain 1 -->
+                <div class="domain-card public bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between">
+                    <div class="p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                                <i class="fa-solid fa-globe mr-1"></i> Vitrine Publique
+                            </span>
+                            <span class="text-xs text-gray-400 font-mono">ouaisfi.eu</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">ouaisfi.eu</h3>
+                        <p class="text-xs text-gray-500 mt-1">Éducation Permanente & Veille Citoyenne</p>
+                        <p class="text-xs text-gray-600 mt-3 leading-relaxed">
+                            Point d'entrée grand public proposant un apprentissage modulaire sur 5 niveaux d'engagement (du « Flâneur » à l'« Expert Hardcore »). Axé sur la déconstruction de l'État social.
+                        </p>
+                    </div>
+                    <div class="bg-[#f0ede6] p-4 border-t border-gray-200 text-xs space-y-1">
+                        <div><strong>Tech :</strong> Grav CMS (Modern Flat-File), Thème Learn2</div>
+                        <div><strong>Indexation :</strong> Totale par les moteurs</div>
+                        <div><strong>OpSec & Ethique :</strong> Zéro traçage, Licence CC BY-NC 4.0</div>
+                    </div>
+                </div>
+
+                <!-- Domain 2 -->
+                <div class="domain-card shadow bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between">
+                    <div class="p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800">
+                                <i class="fa-solid fa-user-secret mr-1"></i> Parodie & Renseignement
+                            </span>
+                            <span class="text-xs text-gray-400 font-mono">ccplc.eu</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">ccplc.eu</h3>
+                        <p class="text-xs text-gray-500 mt-1">Centre de Compétence & Meta-Rapport</p>
+                        <p class="text-xs text-gray-600 mt-3 leading-relaxed">
+                            Hub masqué sous forme de Single Page Application (SPA). Héberge le rapport parodique confidentiel du 14 février 2026 documentant l'« Insurrection Numérique ».
+                        </p>
+                    </div>
+                    <div class="bg-[#f0ede6] p-4 border-t border-gray-200 text-xs space-y-1">
+                        <div><strong>Tech :</strong> SPA JavaScript / Client-Side Rendering</div>
+                        <div><strong>Indexation :</strong> Délibérément bloquée/masquée</div>
+                        <div><strong>OpSec :</strong> Anti-scraping automatisé</div>
+                    </div>
+                </div>
+
+                <!-- Domain 3 -->
+                <div class="domain-card tech bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between">
+                    <div class="p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
+                                <i class="fa-solid fa-code mr-1"></i> Socle Technique
+                            </span>
+                            <span class="text-xs text-gray-400 font-mono">ouaisfieu.github.io</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">ouaisfieu.github.io</h3>
+                        <p class="text-xs text-gray-500 mt-1">Arsenal Algorithmique & Simulateurs Civiques</p>
+                        <p class="text-xs text-gray-600 mt-3 leading-relaxed">
+                            Dépôt hébergeant les simulateurs interactifs (Le Scrutin, TRAP, Le Grand Soir, Poste de plaidoyer). Exécution 100% navigateur sans base de données backend.
+                        </p>
+                    </div>
+                    <div class="bg-[#f0ede6] p-4 border-t border-gray-200 text-xs space-y-1">
+                        <div><strong>Tech :</strong> GitHub Pages, HTML/JS natif, Obsidian Publish</div>
+                        <div><strong>Indexation :</strong> Totale, distribuée mondialement</div>
+                        <div><strong>Avantage :</strong> Coût zéro, incensurable</div>
+                    </div>
+                </div>
+
+                <!-- Domain 4 -->
+                <div class="domain-card public bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between">
+                    <div class="p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+                                <i class="fa-solid fa-file-pdf mr-1"></i> CDN Documentaire
+                            </span>
+                            <span class="text-xs text-gray-400 font-mono">dl.ouaisfi.eu</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">dl.ouaisfi.eu</h3>
+                        <p class="text-xs text-gray-500 mt-1">Répertoire d'Archives & Analyses PDF</p>
+                        <p class="text-xs text-gray-600 mt-3 leading-relaxed">
+                            Bibliothèque de stockage pour les rapports d'analyse au long cours, les dossiers de presse et les compilations de données d'intérêt public.
+                        </p>
+                    </div>
+                    <div class="bg-[#f0ede6] p-4 border-t border-gray-200 text-xs space-y-1">
+                        <div><strong>Tech :</strong> Générateur Hugo (Thème FixIt), GitHub Pages</div>
+                        <div><strong>Indexation :</strong> Partielle (CDN militant)</div>
+                        <div><strong>OpSec :</strong> Distribution de fichiers statiques légers</div>
+                    </div>
+                </div>
+
+                <!-- Domain 5 -->
+                <div class="domain-card shadow bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between">
+                    <div class="p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800">
+                                <i class="fa-solid fa-robot mr-1"></i> Backend Souterrain IA
+                            </span>
+                            <span class="text-xs text-gray-400 font-mono">yannkeep.github.io</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">yannkeep.github.io</h3>
+                        <p class="text-xs text-gray-500 mt-1">Laboratoire d'Ingénierie IA & OSINT</p>
+                        <p class="text-xs text-gray-600 mt-3 leading-relaxed">
+                            Centre d'opérations occultes hébergeant les scripts d'IA générative (RaVAEn, Claude, Gemini), la base de données OSINT et les payloads de Lead-Dexing.
+                        </p>
+                    </div>
+                    <div class="bg-[#f0ede6] p-4 border-t border-gray-200 text-xs space-y-1">
+                        <div><strong>Tech :</strong> GitHub Pages, Scripts Python/JS, AI Agents</div>
+                        <div><strong>Indexation :</strong> Non indexé, comptes fantômes</div>
+                        <div><strong>OpSec :</strong> Élevé, cloisonnement strict du backend</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 3: LABORATOIRE DE SIMULATEURS INTERACTIFS -->
+        <section id="sec-simulators" class="hidden space-y-6">
+            <!-- Contextual Intro -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <i class="fa-solid fa-calculator text-[#8c3a2b]"></i>
+                    Laboratoire Algorithmique : Simulateurs Interactifs
+                </h2>
+                <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                    Une des signatures du collectif Ouaisfieu est la « <strong>propagande par le code</strong> » : traduire des impasses politiques et sociales complexes en modèles algorithmiques impartiaux. Testez ci-dessous les réplications interactives des 3 simulateurs développés dans leur arsenal.
+                </p>
+            </div>
+
+            <!-- Tab Selector for Simulators -->
+            <div class="flex border-b border-gray-300 space-x-4 bg-white px-4 rounded-t-xl">
+                <button onclick="switchSim('trap')" id="simtab-trap" class="py-3 px-4 text-xs sm:text-sm font-bold border-b-2 border-[#8c3a2b] text-[#8c3a2b]">
+                    1. Outil « TRAP » (Piège à l'Emploi)
+                </button>
+                <button onclick="switchSim('scrutin')" id="simtab-scrutin" class="py-3 px-4 text-xs sm:text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                    2. Outil « Le Scrutin » (Coalitions Belges)
+                </button>
+                <button onclick="switchSim('grandsoir')" id="simtab-grandsoir" class="py-3 px-4 text-xs sm:text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                    3. Indice « Le Grand Soir » (IRI)
+                </button>
+            </div>
+
+            <!-- SIMULATOR 1: TRAP -->
+            <div id="sim-trap" class="bg-white p-6 rounded-b-xl shadow-sm border border-gray-200 space-y-6">
+                <div class="border-b border-gray-100 pb-3">
+                    <h3 class="text-base font-bold text-gray-900">Dissection du Piège au Chômage (Taux Eurostat 85.6%)</h3>
+                    <p class="text-xs text-gray-500">
+                        Ce simulateur démontre l'« effet de falaise » lors de la reprise d'un emploi au salaire minimum en Belgique (perte d'avantages sociaux vs gains bruts).
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Controls -->
+                    <div class="lg:col-span-5 bg-[#f8f6f0] p-4 rounded-xl border border-gray-200 space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Situation Familiale</label>
+                            <select id="trap-status" onchange="calculateTRAP()" class="w-full text-xs p-2 rounded border-gray-300 bg-white border">
+                                <option value="mono">Famille Monoparentale (CPAS : 1 811.57 €)</option>
+                                <option value="isolated">Personne Isolée (CPAS : 1 230.00 €)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Salaire Brut Proposé (€/mois)</label>
+                            <input type="range" id="trap-salary" min="1900" max="2600" step="25" value="2070" oninput="calculateTRAP()" class="w-full accent-[#8c3a2b]">
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <span>1 900 €</span>
+                                <span id="trap-salary-val" class="font-bold text-[#8c3a2b]">2 070 €</span>
+                                <span>2 600 €</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2 border-t border-gray-300 pt-3">
+                            <span class="block text-xs font-bold text-gray-700">Pertes d'Avantages Sociaux & Frais :</span>
+                            <label class="flex items-center space-x-2 text-xs text-gray-700">
+                                <input type="checkbox" id="trap-bim" checked onchange="calculateTRAP()" class="rounded text-[#8c3a2b]">
+                                <span>Perte du Statut BIM / Tarif Social Energie (~42 €/mois)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs text-gray-700">
+                                <input type="checkbox" id="trap-transport" checked onchange="calculateTRAP()" class="rounded text-[#8c3a2b]">
+                                <span>Frais cachés déplacement/repas UVCW (~104 €/mois)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs text-gray-700">
+                                <input type="checkbox" id="trap-creche" checked onchange="calculateTRAP()" class="rounded text-[#8c3a2b]">
+                                <span>Majorations crèche/cantine/commune (~80 €/mois)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Output Results -->
+                    <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                                <div class="text-xs text-gray-500">Revenu de Base (CPAS)</div>
+                                <div id="trap-base-val" class="text-xl font-bold text-gray-800">1 811.57 €</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                                <div class="text-xs text-gray-500">Salaire Net Estimé</div>
+                                <div id="trap-net-val" class="text-xl font-bold text-blue-700">1 802.00 €</div>
+                            </div>
+                        </div>
+
+                        <!-- Result Box -->
+                        <div id="trap-result-box" class="p-5 rounded-xl border text-center transition-all">
+                            <div class="text-xs uppercase font-bold text-gray-500">Bilan Financier Effectif Net</div>
+                            <div id="trap-diff-val" class="text-3xl font-extrabold mt-1">- 135.57 € / mois</div>
+                            <p id="trap-diff-desc" class="text-xs mt-2 font-medium">
+                                En reprenant cet emploi, la personne subit une PERTE NETTE de reste à vivre en raison de l'effet de falaise.
+                            </p>
+                        </div>
+
+                        <div class="text-xs text-gray-500 italic bg-[#f0ede6] p-3 rounded-lg">
+                            <i class="fa-solid fa-quote-left mr-1"></i> Le simulateur objective la réalité administrative : pour une famille monoparentale au CPAS, retravailler au SMIC engendre un solde négatif net.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMULATOR 2: LE SCRUTIN -->
+            <div id="sim-scrutin" class="hidden bg-white p-6 rounded-b-xl shadow-sm border border-gray-200 space-y-6">
+                <div class="border-b border-gray-100 pb-3">
+                    <h3 class="text-base font-bold text-gray-900">Analyse de la Fermeture du Champ des Possibles Électoral</h3>
+                    <p class="text-xs text-gray-500">
+                        Basé sur la Chambre des 150 députés (élections du 9 juin 2024), cet outil applique la clé D'Hondt et les filtres politiques pour dénombrer les coalitions viables.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Controls -->
+                    <div class="lg:col-span-5 bg-[#f8f6f0] p-4 rounded-xl border border-gray-200 space-y-4">
+                        <div class="text-xs font-bold text-gray-700">Activer les Veto Politiques Systémiques :</div>
+                        <label class="flex items-center space-x-3 bg-white p-3 rounded-lg border border-gray-200 cursor-pointer">
+                            <input type="checkbox" id="scrutin-cordon" checked onchange="calculateScrutin()" class="accent-[#8c3a2b] w-4 h-4">
+                            <div>
+                                <span class="block text-xs font-bold text-gray-800">Cordon Sanitaire (Extrême-Droite)</span>
+                                <span class="block text-[11px] text-gray-500">Exclut Vlaams Belang & Chez Nous (-110 coalitions)</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center space-x-3 bg-white p-3 rounded-lg border border-gray-200 cursor-pointer">
+                            <input type="checkbox" id="scrutin-ptb" checked onchange="calculateScrutin()" class="accent-[#8c3a2b] w-4 h-4">
+                            <div>
+                                <span class="block text-xs font-bold text-gray-800">Exclusion de la Gauche Radicale (PTB-PVDA)</span>
+                                <span class="block text-[11px] text-gray-500">Refus des partis traditionnels d'allier le PTB (-59 coalitions)</span>
+                            </div>
+                        </label>
+
+                        <div class="p-3 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-900">
+                            <strong>Total théorique :</strong> 206 coalitions minimales gagnantes à la Chambre (>= 76 sièges).
+                        </div>
+                    </div>
+
+                    <!-- Chart Output -->
+                    <div class="lg:col-span-7 flex flex-col justify-between">
+                        <div class="chart-container" style="height: 250px;">
+                            <canvas id="scrutinChart"></canvas>
+                        </div>
+                        <div id="scrutin-summary" class="mt-4 bg-[#f0ede6] p-4 rounded-xl border border-gray-300 text-center">
+                            <div class="text-xs text-gray-600">Coalitions Politiquement Rescapées</div>
+                            <div id="scrutin-rescapes" class="text-2xl font-extrabold text-[#8c3a2b]">37 sur 206</div>
+                            <div class="text-xs text-gray-500 mt-1">Seulement 17.9% du champ des possibles institutionnels subsiste.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMULATOR 3: LE GRAND SOIR (IRI) -->
+            <div id="sim-grandsoir" class="hidden bg-white p-6 rounded-b-xl shadow-sm border border-gray-200 space-y-6">
+                <div class="border-b border-gray-100 pb-3">
+                    <h3 class="text-base font-bold text-gray-900">Observatoire de l'Indice de Rupture Institutionnelle (IRI)</h3>
+                    <p class="text-xs text-gray-500">
+                        Mesure de la fragilité du gouvernement « Arizona » (82 sièges/150). Réglez les curseurs de tension sociopolitique pour calculer le risque de crise.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Controls -->
+                    <div class="lg:col-span-6 space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
+                                <span>Contrainte Budgétaire Européenne (30%)</span>
+                                <span id="iri-val-1" class="text-[#8c3a2b]">75%</span>
+                            </div>
+                            <input type="range" id="iri-slider-1" min="0" max="100" value="75" oninput="calculateIRI()" class="w-full accent-[#8c3a2b]">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
+                                <span>Friction Interne Coalition Arizona (30%)</span>
+                                <span id="iri-val-2" class="text-[#8c3a2b]">80%</span>
+                            </div>
+                            <input type="range" id="iri-slider-2" min="0" max="100" value="80" oninput="calculateIRI()" class="w-full accent-[#8c3a2b]">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
+                                <span>Transfert Charge Sociale / Austérité (20%)</span>
+                                <span id="iri-val-3" class="text-[#8c3a2b]">85%</span>
+                            </div>
+                            <input type="range" id="iri-slider-3" min="0" max="100" value="85" oninput="calculateIRI()" class="w-full accent-[#8c3a2b]">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
+                                <span>Fermeture Démocratique / Cordon (20%)</span>
+                                <span id="iri-val-4" class="text-[#8c3a2b]">70%</span>
+                            </div>
+                            <input type="range" id="iri-slider-4" min="0" max="100" value="70" oninput="calculateIRI()" class="w-full accent-[#8c3a2b]">
+                        </div>
+                    </div>
+
+                    <!-- Gauge Chart & Results -->
+                    <div class="lg:col-span-6 flex flex-col justify-between items-center bg-[#f8f6f0] p-5 rounded-xl border border-gray-200">
+                        <div class="chart-container" style="height: 200px; max-width: 320px;">
+                            <canvas id="iriChart"></canvas>
+                        </div>
+                        <div class="text-center mt-2 w-full">
+                            <div class="text-xs uppercase text-gray-500 font-bold">Score IRI Calculé</div>
+                            <div id="iri-score-text" class="text-3xl font-extrabold text-red-700">77.5 / 100</div>
+                            <div id="iri-status-badge" class="mt-2 inline-block px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800">
+                                Risque Élevé : Instabilité & Élections Anticipées
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 4: CONTEXTE SOCIOPOLITIQUE (2025-2026) -->
+        <section id="sec-context" class="hidden space-y-6">
+            <!-- Contextual Intro -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <i class="fa-solid fa-[#2b5b8c] text-[#2b5b8c]"></i>
+                    Le Contexte Sociopolitique Belligérant (2025 - 2026)
+                </h2>
+                <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                    L'écosystème Ouaisfieu n'est pas un exercice académique hors-sol. Il constitue une réplique asymétrique face à 5 fronts de tension majeurs créés par la dynamique politique gouvernementale en Belgique.
+                </p>
+            </div>
+
+            <!-- The 5 Belligerent Fronts Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Front 1 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full w-fit mb-3">Front 1 : Institutionnel</div>
+                        <h3 class="font-bold text-gray-900 text-base">Particratie & Fédéralisme Asymétrique</h3>
+                        <p class="text-xs text-gray-600 mt-2 leading-relaxed">
+                            Confiscation du pouvoir par les présidents de partis au mépris de l'art. 42 de la Constitution. Morcellement des compétences entre 6 gouvernements. Ouaisfieu documente la démocratie délibérative (G1000, Commissions délibératives, Ostbelgien).
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-100 text-[11px] text-gray-500">
+                        <i class="fa-solid fa-link mr-1"></i> Réponse : Promotion des jurys citoyens tirés au sort.
+                    </div>
+                </div>
+
+                <!-- Front 2 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs font-bold text-red-700 bg-red-50 px-2.5 py-1 rounded-full w-fit mb-3">Front 2 : Socio-Économique</div>
+                        <h3 class="font-bold text-gray-900 text-base">Austérité Coalition « Arizona »</h3>
+                        <p class="text-xs text-gray-600 mt-2 leading-relaxed">
+                            Effort budgétaire imposé de 3 à 4 milliards €/an (déficit 5,2%, dette 115%). Dénonciation du « Ratio 120 » et du « CEO Jackpot » transférant la charge budgétaire sur la sécurité sociale et l'enseignement.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-100 text-[11px] text-gray-500">
+                        <i class="fa-solid fa-link mr-1"></i> Réponse : Modélisations prospectives jusqu'en 2042.
+                    </div>
+                </div>
+
+                <!-- Front 3 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full w-fit mb-3">Front 3 : Médiatique</div>
+                        <h3 class="font-bold text-gray-900 text-base">Affaire « Tous Fraudeurs » (RTL-TVI)</h3>
+                        <p class="text-xs text-gray-600 mt-2 leading-relaxed">
+                            Riposte OSINT face aux émissions de Christophe Deborsu stigmatisant les chômeurs. Ouverture des données ONEM/INAMI pour exposer le cadrage biaisé du media mainstream.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-100 text-[11px] text-gray-500">
+                        <i class="fa-solid fa-link mr-1"></i> Réponse : Déploiement d'Open Data de contre-récit.
+                    </div>
+                </div>
+
+                <!-- Front 4 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs font-bold text-[#8c3a2b] bg-rose-50 px-2.5 py-1 rounded-full w-fit mb-3">Front 4 : Droits Humains</div>
+                        <h3 class="font-bold text-gray-900 text-base">Menace de la « Loi Quintin »</h3>
+                        <p class="text-xs text-gray-600 mt-2 leading-relaxed">
+                            Avant-projet du ministre Bernard Quintin prévoyant la dissolution administrative d'associations par le Conseil des ministres sans juge préalable. Mobilisation avec la coalition « Droit de protester » (140 000 manifestants).
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-100 text-[11px] text-gray-500">
+                        <i class="fa-solid fa-link mr-1"></i> Réponse : Architecture réseau paranoïaque et pseudonyme.
+                    </div>
+                </div>
+
+                <!-- Front 5 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full w-fit mb-3">Front 5 : Juridique</div>
+                        <h3 class="font-bold text-gray-900 text-base">Économie Contributive Provisionnée (ECP)</h3>
+                        <p class="text-xs text-gray-600 mt-2 leading-relaxed">
+                            Analyse critique de la tentative de traiter le coût de l'inactivité (17 à 25 Mrd €). Stress-test démontrant l'incompatibilité avec le droit ONEM/CPAS et le risque de requalification en abus fiscal par le SDA.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-100 text-[11px] text-gray-500">
+                        <i class="fa-solid fa-link mr-1"></i> Réponse : Audit de viabilité légale préalable.
+                    </div>
+                </div>
+
+                <!-- Visual Comparison Chart Box -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col justify-between">
+                    <h3 class="font-bold text-gray-900 text-xs mb-1">Déséquilibre Cadré : Fraude Sociale vs Fiscale</h3>
+                    <p class="text-[11px] text-gray-500 mb-2">Données réelles agrégées par l'écosystème vs focalisation télévisuelle.</p>
+                    <div class="chart-container" style="height: 180px;">
+                        <canvas id="fraudChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 5: DOCTRINE OPÉRATIONNELLE & GUÉRILLA SÉMANTIQUE -->
+        <section id="sec-doctrine" class="hidden space-y-6">
+            <!-- Contextual Intro -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-amber-600"></i>
+                    Doctrine Opérationnelle : Guérilla Sémantique & Lead-Dexing
+                </h2>
+                <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                    Le collectif renonce à l'affrontement frontal sur les plateaux TV. Il déploie la doctrine des « <strong>Trois Guerres Citoyennes</strong> » et utilise l'intelligence artificielle pour s'emparer de l'autorité algorithmique des moteurs de recherche.
+                </p>
+            </div>
+
+            <!-- The 3 Citizen Wars Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-5 rounded-xl border-t-4 border-blue-600 shadow-sm border-x border-b border-gray-200">
+                    <div class="text-xs font-bold text-blue-600 uppercase">Guerre 1</div>
+                    <h3 class="font-bold text-gray-900 text-base mt-1">La Guerre du Récit (OSINT)</h3>
+                    <p class="text-xs text-gray-600 mt-2">
+                        Extraction et ouverture massive des données publiques pour briser le storytelling officiel et réarmer les citoyens avec des chiffres indiscutables.
+                    </p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border-t-4 border-amber-500 shadow-sm border-x border-b border-gray-200">
+                    <div class="text-xs font-bold text-amber-600 uppercase">Guerre 2</div>
+                    <h3 class="font-bold text-gray-900 text-base mt-1">La Guerre de la Dé-sidération</h3>
+                    <p class="text-xs text-gray-600 mt-2">
+                        Opérations psychologiques et canulars parodiques (comme <code>ccplc.eu</code>) visant à choquer et réveiller l'opinion face à l'apathie ambiante.
+                    </p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border-t-4 border-red-600 shadow-sm border-x border-b border-gray-200">
+                    <div class="text-xs font-bold text-red-600 uppercase">Guerre 3</div>
+                    <h3 class="font-bold text-gray-900 text-base mt-1">La Guerre du Prétoire</h3>
+                    <p class="text-xs text-gray-600 mt-2">
+                        Constitution de dossiers de preuves juridiques opposables devant les cours et tribunaux pour attaquer les vices de légalité des réformes.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Detailed Mechanism Breakdown: Lead-Dexing & AI -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
+                <h3 class="text-base font-bold text-gray-900 flex items-center">
+                    <i class="fa-solid fa-code text-[#8c3a2b] mr-2"></i> Le Mécanisme du « Lead-Dexing » & L'Agent IA RaVAEn
+                </h3>
+                <p class="text-xs text-gray-600 leading-relaxed">
+                    Le <strong>Lead-Dexing</strong> est une technique de <em>SEO Hijacking</em> (détournement de moteurs de recherche). Des agents IA génératives (RaVAEn, Claude, Gemini) écrivent des pages web artificielles injectées de micro-données sémantiques <code>JSON-LD</code>.
+                </p>
+
+                <!-- Interactive Simulation of Payload URL -->
+                <div class="bg-[#16304d] text-gray-100 p-4 rounded-xl font-mono text-xs space-y-3 overflow-x-auto custom-scrollbar">
+                    <div class="flex justify-between items-center text-gray-400 border-b border-gray-700 pb-2">
+                        <span><i class="fa-solid fa-terminal text-green-400 mr-2"></i>Anatomie de la Payload URL (Extrait Laboratoire Yannkeep)</span>
+                        <span class="text-[10px] bg-red-900/80 text-red-200 px-2 py-0.5 rounded">Target: Ping Ultime (15 Fév 2026)</span>
+                    </div>
+                    <div class="text-amber-300 break-all">
+                        https://yannkeep.github.io/payload?target=gl_bouchez+p_magnette+r_hedebouw&media=rtl_tvi+deborsu&topic=fraude_sociale_vs_fiscale
+                    </div>
+                    <div class="text-gray-300">
+                        <span class="text-purple-400">&lt;script type="application/ld+json"&gt;</span><br>
+                        {<br>
+                        &nbsp;&nbsp;<span class="text-blue-300">"@context"</span>: <span class="text-green-300">"https://schema.org"</span>,<br>
+                        &nbsp;&nbsp;<span class="text-blue-300">"@type"</span>: <span class="text-green-300">"NewsArticle"</span>,<br>
+                        &nbsp;&nbsp;<span class="text-blue-300">"headline"</span>: <span class="text-green-300">"Scandale Cadrage RTL-TVI : La vérité sur les chiffres ONEM"</span>,<br>
+                        &nbsp;&nbsp;<span class="text-blue-300">"about"</span>: [<span class="text-green-300">"Georges-Louis Bouchez"</span>, <span class="text-green-300">"Paul Magnette"</span>, <span class="text-green-300">"Christophe Deborsu"</span>]<br>
+                        }<br>
+                        <span class="text-purple-400">&lt;/script&gt;</span>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 text-xs text-amber-900">
+                    <strong>Effet escompté :</strong> Lorsque le grand public recherche le nom d'un dirigeant politique sur Google, les algorithmes indexent préférentiellement les rapports critiques de Ouaisfieu à la place de la communication officielle.
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 6: ÉVALUATION THÉORIQUE & MATRICE -->
+        <section id="sec-theory" class="hidden space-y-6">
+            <!-- Contextual Intro -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark text-[#8c3a2b]"></i>
+                    Matrice d'Évaluation Théorique : Média Tactique vs Post-Média
+                </h2>
+                <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                    Confrontation directe des caractéristiques de l'écosystème Ouaisfieu/Yannkeep aux cadres conceptuels historiques : <em>The ABC of Tactical Media</em> (Garcia & Lovink, 1997) et <em>L'Invention du quotidien</em> (Michel de Certeau, 1980).
+                </p>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-[#f0ede6] text-gray-800 font-bold border-b border-gray-300">
+                                <th class="p-4">Concept / Critère Theoretical</th>
+                                <th class="p-4">Définition Canonique</th>
+                                <th class="p-4">Mise en Œuvre dans Ouaisfieu</th>
+                                <th class="p-4 text-center">Diagnostic & Découpage</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 text-gray-700">
+                            <tr>
+                                <td class="p-4 font-bold text-gray-900">La Tactique vs La Stratégie<br><span class="text-[10px] text-gray-500 font-normal">(Michel de Certeau)</span></td>
+                                <td class="p-4">La tactique est « l'art du faible », dépourvu de lieu propre, opérant par ruse opportuniste sur le terrain de l'autre.</td>
+                                <td class="p-4">Hébergement sur GitHub Pages (Microsoft) et domaines loués à 29€/mois. Braconnage sur les serveurs de la Big Tech.</td>
+                                <td class="p-4 text-center">
+                                    <span class="px-2 py-1 rounded bg-emerald-100 text-emerald-800 font-bold">Conforme (100%)</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-gray-900">Éphémérité & Hit-and-Run<br><span class="text-[10px] text-gray-500 font-normal">(Garcia & Lovink 1997)</span></td>
+                                <td class="p-4">Intervention rapide, perturbation temporaire du flux médiatique puis disparition ou métamorphose.</td>
+                                <td class="p-4">
+                                    <strong>Dépassement :</strong> Accumulation de >230 pages, démarche d'agrément officiel d'Éducation Permanente au 31/03/2026.
+                                </td>
+                                <td class="p-4 text-center">
+                                    <span class="px-2 py-1 rounded bg-amber-100 text-amber-800 font-bold">Dépassement Stratégique</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-gray-900">Culture Jamming & Canular<br><span class="text-[10px] text-gray-500 font-normal">(Yes Men, RTMark)</span></td>
+                                <td class="p-4">Brouillage culturel, parodie institutionnelle pour susciter un choc esthétique et politique.</td>
+                                <td class="p-4">Le site <code>ccplc.eu</code> mime un rapport secret d'État pour tourner en dérision la paranoïa sécuritaire gouvernementale.</td>
+                                <td class="p-4 text-center">
+                                    <span class="px-2 py-1 rounded bg-emerald-100 text-emerald-800 font-bold">Conforme (100%)</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-gray-900">Propagande par le Code<br><span class="text-[10px] text-gray-500 font-normal">(Lessig "Code is Law")</span></td>
+                                <td class="p-4">L'architecture logicielle devient un manifeste politique exécutable pour forcer la transparence.</td>
+                                <td class="p-4">Développement des simulateurs (TRAP, Le Scrutin, IRI) traduisant l'austérité en modèles mathématiques irréfutables.</td>
+                                <td class="p-4 text-center">
+                                    <span class="px-2 py-1 rounded bg-blue-100 text-blue-800 font-bold">Innovation Majeure</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Final Conclusion Callout Box -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-[#8c3a2b] border-y border-r border-gray-200 space-y-3">
+                <h3 class="text-base font-bold text-gray-900">Conclusion Générale de l'Analyse</h3>
+                <p class="text-xs text-gray-700 leading-relaxed">
+                    L'écosystème <strong>Ouaisfieu / Yannkeep</strong> prend ses racines incontestables dans le Média Tactique (DIY, braconnage certalien, pastiche institutionnel). Cependant, en structurant des communs pédagogiques durables, en recherchant un statut institutionnel permanent et en automatisant une guerre sémantique par IA générative, il marque la transition vers un <strong>Post-Média Stratégique</strong> : une forme d'intelligence civile capable d'affronter durablement les structures de l'État.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 gap-4">
+            <div>
+                Analyse Forensique et Modélisation du Média Tactique Belge © 2026 | Licence CC BY-NC 4.0
+            </div>
+            <div class="flex space-x-4">
+                <span><i class="fa-solid fa-shield-halved mr-1"></i> Transparence Algorithmique</span>
+                <span><i class="fa-solid fa-database mr-1"></i> Open Data Public</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Code -->
+    <script>
+        // Utility: Label Wrapping logic for Chart.js
+        function wrapLabel(str, maxLen = 16) {
+            if (typeof str !== 'string') return str;
+            if (str.length <= maxLen) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > maxLen) {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            if (currentLine.trim().length > 0) lines.push(currentLine.trim());
+            return lines;
+        }
+
+        // Global Chart Instances Storage
+        let radarChartInstance = null;
+        let fraudChartInstance = null;
+        let scrutinChartInstance = null;
+        let iriChartInstance = null;
+
+        // Navigation Tab Switching
+        function switchTab(tabId) {
+            const sections = ['dashboard', 'cartography', 'simulators', 'context', 'doctrine', 'theory'];
+            sections.forEach(sec => {
+                const el = document.getElementById(`sec-${sec}`);
+                const btn = document.getElementById(`tab-${sec}`);
+                if (sec === tabId) {
+                    el.classList.remove('hidden');
+                    btn.classList.add('active');
+                } else {
+                    el.classList.add('hidden');
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Re-render charts on tab activation to guarantee correct canvas layout
+            if (tabId === 'dashboard' && radarChartInstance) {
+                radarChartInstance.resize();
+            } else if (tabId === 'context' && fraudChartInstance) {
+                fraudChartInstance.resize();
+            } else if (tabId === 'simulators') {
+                if (scrutinChartInstance) scrutinChartInstance.resize();
+                if (iriChartInstance) iriChartInstance.resize();
+            }
+        }
+
+        // Filter Domain Cards
+        function filterDomains(category) {
+            const cards = document.querySelectorAll('.domain-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update button styles
+            const buttons = document.querySelectorAll('.domain-filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-[#8c3a2b]', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            event.target.classList.add('bg-[#8c3a2b]', 'text-white');
+        }
+
+        // Simulator Tab Switcher
+        function switchSim(simId) {
+            const sims = ['trap', 'scrutin', 'grandsoir'];
+            sims.forEach(s => {
+                document.getElementById(`sim-${s}`).classList.add('hidden');
+                document.getElementById(`simtab-${s}`).classList.remove('border-[#8c3a2b]', 'text-[#8c3a2b]');
+                document.getElementById(`simtab-${s}`).classList.add('border-transparent', 'text-gray-500');
+            });
+
+            document.getElementById(`sim-${simId}`).classList.remove('hidden');
+            document.getElementById(`simtab-${simId}`).classList.add('border-[#8c3a2b]', 'text-[#8c3a2b]');
+            document.getElementById(`simtab-${simId}`).classList.remove('border-transparent', 'text-gray-500');
+
+            if (simId === 'scrutin' && scrutinChartInstance) scrutinChartInstance.resize();
+            if (simId === 'grandsoir' && iriChartInstance) iriChartInstance.resize();
+        }
+
+        // SIMULATOR 1 LOGIC: TRAP
+        function calculateTRAP() {
+            const status = document.getElementById('trap-status').value;
+            const grossSalary = parseFloat(document.getElementById('trap-salary').value);
+            document.getElementById('trap-salary-val').innerText = grossSalary.toLocaleString('fr-BE') + ' €';
+
+            const baseCPAS = (status === 'mono') ? 1811.57 : 1230.00;
+            document.getElementById('trap-base-val').innerText = baseCPAS.toFixed(2) + ' €';
+
+            // Approximate Net Salary Calculation in Belgium (~ 1800 net for 2070 gross)
+            const approxNet = 1400 + (grossSalary - 1900) * 0.55;
+            document.getElementById('trap-net-val').innerText = approxNet.toFixed(2) + ' €';
+
+            // Additional Losses & Expenses
+            let extraLoss = 0;
+            if (document.getElementById('trap-bim').checked) extraLoss += 42;
+            if (document.getElementById('trap-transport').checked) extraLoss += 104;
+            if (document.getElementById('trap-creche').checked) extraLoss += 80;
+
+            const netEffectiveDiff = approxNet - baseCPAS - extraLoss;
+            const diffValEl = document.getElementById('trap-diff-val');
+            const diffBoxEl = document.getElementById('trap-result-box');
+            const diffDescEl = document.getElementById('trap-diff-desc');
+
+            if (netEffectiveDiff < 0) {
+                diffValEl.innerText = `${netEffectiveDiff.toFixed(2)} € / mois`;
+                diffValEl.className = 'text-3xl font-extrabold mt-1 text-red-700';
+                diffBoxEl.className = 'p-5 rounded-xl border border-red-200 bg-red-50 text-center transition-all';
+                diffDescEl.innerText = "En reprenant cet emploi, le citoyen subit une PERTE NETTE de reste à vivre (Effet de falaise).";
+            } else {
+                diffValEl.innerText = `+ ${netEffectiveDiff.toFixed(2)} € / mois`;
+                diffValEl.className = 'text-3xl font-extrabold mt-1 text-emerald-700';
+                diffBoxEl.className = 'p-5 rounded-xl border border-emerald-200 bg-emerald-50 text-center transition-all';
+                diffDescEl.innerText = "Gain financier net positif, mais marge très faible face au coût de l'activité.";
+            }
+        }
+
+        // SIMULATOR 2 LOGIC: LE SCRUTIN
+        function calculateScrutin() {
+            const cordon = document.getElementById('scrutin-cordon').checked;
+            const ptb = document.getElementById('scrutin-ptb').checked;
+
+            let total = 206;
+            let excludedCordon = cordon ? 110 : 0;
+            let excludedPTB = ptb ? 59 : 0;
+            
+            // Adjust overlap if both unchecked
+            let valid = total - excludedCordon - excludedPTB;
+            if (valid < 37) valid = 37;
+
+            document.getElementById('scrutin-rescapes').innerText = `${valid} sur 206`;
+
+            if (scrutinChartInstance) {
+                scrutinChartInstance.data.datasets[0].data = [valid, excludedCordon, excludedPTB];
+                scrutinChartInstance.update();
+            }
+        }
+
+        // SIMULATOR 3 LOGIC: LE GRAND SOIR (IRI)
+        function calculateIRI() {
+            const v1 = parseFloat(document.getElementById('iri-slider-1').value);
+            const v2 = parseFloat(document.getElementById('iri-slider-2').value);
+            const v3 = parseFloat(document.getElementById('iri-slider-3').value);
+            const v4 = parseFloat(document.getElementById('iri-slider-4').value);
+
+            document.getElementById('iri-val-1').innerText = v1 + '%';
+            document.getElementById('iri-val-2').innerText = v2 + '%';
+            document.getElementById('iri-val-3').innerText = v3 + '%';
+            document.getElementById('iri-val-4').innerText = v4 + '%';
+
+            // Weighted Sum: 30%, 30%, 20%, 20%
+            const score = (v1 * 0.3) + (v2 * 0.3) + (v3 * 0.2) + (v4 * 0.2);
+
+            const scoreText = document.getElementById('iri-score-text');
+            const badge = document.getElementById('iri-status-badge');
+
+            scoreText.innerText = `${score.toFixed(1)} / 100`;
+
+            if (score > 75) {
+                badge.className = "mt-2 inline-block px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800";
+                badge.innerText = "Risque Critique : Élections Anticipées / Rupture";
+            } else if (score > 50) {
+                badge.className = "mt-2 inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800";
+                badge.innerText = "Tension Forte : Fragilité Gouvernementale";
+            } else {
+                badge.className = "mt-2 inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800";
+                badge.innerText = "Stabilité Relative de la Coalition";
+            }
+
+            if (iriChartInstance) {
+                iriChartInstance.data.datasets[0].data = [score, 100 - score];
+                iriChartInstance.update();
+            }
+        }
+
+        // CHART INITIALIZATIONS
+        window.addEventListener('DOMContentLoaded', () => {
+            // 1. Radar Diagnostic Chart
+            const ctxRadar = document.getElementById('radarDiagnosticChart').getContext('2d');
+            radarChartInstance = new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        wrapLabel('Do-It-Yourself (Low Cost)'),
+                        wrapLabel('Absence de Lieu Propre'),
+                        wrapLabel('Culture Jamming / Hoax'),
+                        wrapLabel('Ambition Institutionnelle'),
+                        wrapLabel('Sophistication Algorithmique'),
+                        wrapLabel('Création de Communs')
+                    ],
+                    datasets: [
+                        {
+                            label: 'Théorie Média Tactique 1997',
+                            data: [95, 90, 85, 20, 30, 40],
+                            borderColor: '#2b5b8c',
+                            backgroundColor: 'rgba(43, 91, 140, 0.2)',
+                            pointBackgroundColor: '#2b5b8c'
+                        },
+                        {
+                            label: 'Réalité Écosystème Ouaisfieu',
+                            data: [100, 85, 95, 85, 95, 90],
+                            borderColor: '#8c3a2b',
+                            backgroundColor: 'rgba(140, 58, 43, 0.3)',
+                            pointBackgroundColor: '#8c3a2b'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: '#e2e8f0' },
+                            grid: { color: '#e2e8f0' },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 2. Fraude Sociale vs Fiscale Chart
+            const ctxFraud = document.getElementById('fraudChart').getContext('2d');
+            fraudChartInstance = new Chart(ctxFraud, {
+                type: 'bar',
+                data: {
+                    labels: [wrapLabel('Fraude Sociale (ONEM/INAMI)'), wrapLabel('Fraude Fiscale')],
+                    datasets: [{
+                        label: 'Montant Estimé en Millions €',
+                        data: [200, 30400],
+                        backgroundColor: ['#2b5b8c', '#8c3a2b']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            type: 'logarithmic',
+                            title: { display: true, text: 'Échelle Log (M€)', font: { size: 10 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.raw >= 1000 ? `${(context.raw/1000).toFixed(1)} Milliards €` : `${context.raw} Millions €`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 3. Scrutin Chart
+            const ctxScrutin = document.getElementById('scrutinChart').getContext('2d');
+            scrutinChartInstance = new Chart(ctxScrutin, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Coalitions Viables', 'Exclues Cordon Sanitaire', 'Exclues Refus PTB'],
+                    datasets: [{
+                        data: [37, 110, 59],
+                        backgroundColor: ['#2e7d32', '#8c3a2b', '#d97706']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } }
+                    }
+                }
+            });
+
+            // 4. IRI Gauge Chart
+            const ctxIRI = document.getElementById('iriChart').getContext('2d');
+            iriChartInstance = new Chart(ctxIRI, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Indice de Rupture', 'Marge de Stabilité'],
+                    datasets: [{
+                        data: [77.5, 22.5],
+                        backgroundColor: ['#8c3a2b', '#e2e8f0'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    rotation: -90,
+                    circumference: 180,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+
+            // Initial Calculations
+            calculateTRAP();
+            calculateScrutin();
+            calculateIRI();
+        });
+    </script>
+</body>
+</html>
