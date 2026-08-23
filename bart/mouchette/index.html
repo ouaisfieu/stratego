@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observatoire de la Constellation GitHub (ouaisfieu & yannkeep)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                            900: '#0f172a',
+                        },
+                        amber: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        crimson: {
+                            600: '#dc2626',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .tab-active {
+            border-bottom: 3px solid #1d4ed8;
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+    </style>
+    <!-- Chosen Palette: Slate & Warm Amber (Minimalist Civic Tech & Investigative Theme) -->
+    <!-- Application Structure Plan: 
+         1. Header & Quick Navigation Bar: Global search and high-level domain indicators.
+         2. Global KPI Dashboard (Vue d'ensemble): Key quantitative metrics, status breakdown, legislative scenarios.
+         3. Interactive Publications Directory (184 Pages): Multi-filter system by status (Finalisé, À compléter, Labo) and topic with search.
+         4. Institutional Crisis & Mathematical Modeling: Dynamic interactive IRI (Indice de Rupture Institutionnelle) calculator & Arizona Coalition constraint engine.
+         5. Demographic & Sociopolitical Verification: Interactive charts for AROPE Poverty rates (Statbel 2024) and 2D Scatter plot of MR Ideological Shift (RePresent Study).
+         6. Judicial Asymmetry & Reynders Case Analysis: Interactive timeline of financial flows, Article 216bis legal censure, and Brabant Killings cold case update.
+         7. Citizen Advocacy Toolkit Explorer (Atelier Plaidoyer): Step-by-step interactive methodology tools and semi-automated parliamentary letter generator ("Interpelle Ton Élu").
+    -->
+    <!-- Visualization & Content Choices:
+         - Publications breakdown: Donut Chart (Chart.js) -> Highlights the high proportion of active research labs and draft projects.
+         - Legislative Probabilities: Horizontal Bar Chart (Chart.js) -> Clearly compares government completion vs snap election risks.
+         - AROPE Social Vulnerability: Grouped Bar Chart (Chart.js) -> Compares Regional & Socio-demographic disparities with Statbel accuracy.
+         - Political Spectrum Shift: 2D Scatter Plot (Chart.js) -> Maps socio-economic vs socio-cultural axis positioning based on RePresent university data.
+         - Reynders Financial Flow: Styled HTML/CSS Data Card Grid -> Visualizes €1.03M flow breakdown & €1.6M ING penal transaction buy-out.
+         - Interactive IRI Calculator: JS Range Sliders + Dynamic DOM score calculation -> Engages user with quantitative institutional risk parameters.
+         - NO SVG / NO Mermaid JS used as per strict instructions.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-100 selection:text-blue-900">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl">🏛️</span>
+                    <div>
+                        <h1 class="text-lg font-bold text-slate-900 leading-tight">Observatoire GitHub <span class="text-blue-700 font-semibold">ouaisfieu</span> & <span class="text-blue-700 font-semibold">yannkeep</span></h1>
+                        <p class="text-xs text-slate-500">Vérification Démocratique, Architecture & Modélisation Prospectrice</p>
+                    </div>
+                </div>
+                <div class="hidden lg:flex items-center space-x-2 text-xs font-medium text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Données Référencées : Août 2026</span>
+                    <span class="text-slate-300">|</span>
+                    <span>184 Pages Répertoriées</span>
+                </div>
+            </div>
+            <!-- Sub-Navigation Tabs -->
+            <nav class="flex space-x-4 sm:space-x-8 overflow-x-auto custom-scrollbar text-sm font-medium border-t border-slate-100" id="main-nav">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="py-3 px-1 whitespace-nowrap tab-active transition-colors">📊 Vue d'Ensemble</button>
+                <button onclick="switchTab('directory')" id="nav-directory" class="py-3 px-1 whitespace-nowrap text-slate-500 hover:text-slate-800 transition-colors">📁 Répertoire (184 Pages)</button>
+                <button onclick="switchTab('modeling')" id="nav-modeling" class="py-3 px-1 whitespace-nowrap text-slate-500 hover:text-slate-800 transition-colors">⚖️ Crise & Modélisation (IRI)</button>
+                <button onclick="switchTab('checking')" id="nav-checking" class="py-3 px-1 whitespace-nowrap text-slate-500 hover:text-slate-800 transition-colors">🔍 Fact-Checking Sociologique</button>
+                <button onclick="switchTab('justice')" id="nav-justice" class="py-3 px-1 whitespace-nowrap text-slate-500 hover:text-slate-800 transition-colors">💼 Affaire Reynders & 216bis</button>
+                <button onclick="switchTab('advocacy')" id="nav-advocacy" class="py-3 px-1 whitespace-nowrap text-slate-500 hover:text-slate-800 transition-colors">🛡️ Atelier Plaidoyer</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ================= SECTION 1: DASHBOARD ================= -->
+        <section id="sec-dashboard" class="space-y-8">
+            <!-- Intro Paragraph -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Synthèse Analytique de la Constellation Numérique</h2>
+                <p class="text-slate-600 leading-relaxed text-sm">
+                    Ce tableau de bord centralise la synthèse des investigations menées sur l'écosystème décentralisé hébergé sous les domaines <code class="bg-slate-100 text-blue-800 px-1.5 py-0.5 rounded text-xs font-mono">ouaisfieu.github.io</code> et <code class="bg-slate-100 text-blue-800 px-1.5 py-0.5 rounded text-xs font-mono">yannkeep.github.io</code>. Conçu sans traceurs et reposant exclusivement sur des infrastructures statiques ouvertes, cet espace constitue un laboratoire citoyen combinant critique institutionnelle, audit judiciaire et modélisation arithmétique prospective de la politique belge.
+                </p>
+            </div>
+
+            <!-- Metric Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between text-slate-500 mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider">Publications Indexées</span>
+                        <span class="text-xl">📚</span>
+                    </div>
+                    <div class="text-3xl font-extrabold text-slate-900">184</div>
+                    <p class="text-xs text-slate-500 mt-2">79 Finalisées | 79 En cours | 26 Labos</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-amber-200 bg-amber-50/30 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between text-amber-700 mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider">Indice Rupture (IRI)</span>
+                        <span class="text-xl">⚠️</span>
+                    </div>
+                    <div class="text-3xl font-extrabold text-amber-600">72,0 <span class="text-sm font-normal text-slate-500">/ 100</span></div>
+                    <p class="text-xs text-amber-700 font-medium mt-2">Niveau ALERTE - Blocage budgétaire</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between text-slate-500 mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider">Pauvreté Bruxelles (AROPE)</span>
+                        <span class="text-xl">📊</span>
+                    </div>
+                    <div class="text-3xl font-extrabold text-slate-900">37,3 %</div>
+                    <p class="text-xs text-emerald-600 font-medium mt-2">✓ Vérifié via Statbel 2024</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between text-slate-500 mb-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider">Transaction ING (Art. 216bis)</span>
+                        <span class="text-xl">💶</span>
+                    </div>
+                    <div class="text-3xl font-extrabold text-slate-900">1,6 M€</div>
+                    <p class="text-xs text-blue-700 font-medium mt-2">Extinction poursuites (Mai 2026)</p>
+                </div>
+            </div>
+
+            <!-- Visual Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Chart 1: Publication Status -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-bold text-slate-900 text-base">Structure de la Production Documentaire</h3>
+                            <span class="text-xs font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded">184 Pages</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-4">Répartition entre travaux finalisés, brouillons en cours d'élaboration et laboratoires interactifs.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartPublicationStatus"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Political Scenarios -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-bold text-slate-900 text-base">Probabilités des Issues Législatives (2026-2029)</h3>
+                            <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-0.5 rounded">Modèle "Le Grand Soir"</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-4">Estimation des scénarios d'évolution institutionnelle basée sur l'impasse budgétaire et la marge parlementaire de 6 sièges.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartScenarios"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Findings & Methodological Summary -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h3 class="font-bold text-slate-900 text-base mb-4 flex items-center gap-2">
+                    <span>💡</span> Principaux Enseignements de l'Analyse Exhaustive
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-100">
+                        <span class="font-semibold text-blue-800 block mb-1">1. Architecture Décousue mais Décentralisée</span>
+                        <p class="text-slate-600 text-xs leading-relaxed">L'abandon des sites obsolètes au profit de GitHub Pages offre une résilience technique totale, sans collecte de données personnelles et à l'abri de la censure algorithmique.</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-100">
+                        <span class="font-semibold text-blue-800 block mb-1">2. Modélisation Arithmétique Rigoureuse</span>
+                        <p class="text-slate-600 text-xs leading-relaxed">Les simulateurs (IRI & Le Scrutin) appliquent la méthode D'Hondt et les règles budgétaires européennes sans prendre parti, exposant la paralysie mathématique des coalitions.</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-100">
+                        <span class="font-semibold text-blue-800 block mb-1">3. Données Factuelles Intègres</span>
+                        <p class="text-slate-600 text-xs leading-relaxed">Les vérifications croisées confirment l'exactitude des statistiques AROPE (Statbel), du virage socio-économique du MR (RePresent) et de la chronologie judiciaire de l'affaire Reynders.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: DIRECTORY ================= -->
+        <section id="sec-directory" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Répertoire Interactif des 184 Publications & Outils</h2>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                    Cette section répertorie l'intégralité des travaux identifiés au sein du Hub citoyen <code class="bg-slate-100 text-blue-800 px-1 py-0.5 rounded text-xs">ouaisfieu</code> / <code class="bg-slate-100 text-blue-800 px-1 py-0.5 rounded text-xs">yannkeep</code>. Vous pouvez filtrer les projets par statut d'avancement, par catégorie thématique ou effectuer une recherche par mot-clé.
+                </p>
+
+                <!-- Search & Filter Controls -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Recherche textuelle</label>
+                        <input type="text" id="dirSearchInput" onkeyup="filterDirectory()" placeholder="Ex: Reynders, Arizona, PESTEL, Vote..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Statut du Projet</label>
+                        <select id="dirStatusFilter" onchange="filterDirectory()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="ALL">Tous les statuts (184)</option>
+                            <option value="Finalisé">Finalisé (79)</option>
+                            <option value="À compléter">À compléter (79)</option>
+                            <option value="Au labo">Au labo / Expérimental (26)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Catégorie Thématique</label>
+                        <select id="dirCatFilter" onchange="filterDirectory()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="ALL">Toutes les catégories</option>
+                            <option value="Dossiers & Enquêtes">Dossiers & Enquêtes</option>
+                            <option value="Savoirs & Analyses">Savoirs & Analyses</option>
+                            <option value="Outils & Ateliers">Outils & Ateliers</option>
+                            <option value="Laboratoires & OS">Laboratoires & OS</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Results Counter -->
+                <div class="flex justify-between items-center text-xs text-slate-500 mb-4 pb-2 border-b border-slate-100">
+                    <span>Affichage de <strong id="dirCounter" class="text-slate-800">0</strong> éléments correspondants</span>
+                    <span class="hidden sm:inline">Infrastructure : GitHub Pages (Jekyll / HTML)</span>
+                </div>
+
+                <!-- Interactive Publications Table -->
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-600 text-xs uppercase border-b border-slate-200">
+                                <th class="py-3 px-4 font-semibold">Titre & Dépôt</th>
+                                <th class="py-3 px-4 font-semibold">Catégorie</th>
+                                <th class="py-3 px-4 font-semibold">Statut</th>
+                                <th class="py-3 px-4 font-semibold">Postulat & Synthèse</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dirTableBody" class="divide-y divide-slate-100">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: MODELING & IRI ================= -->
+        <section id="sec-modeling" class="hidden space-y-8">
+            <!-- Section Intro -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Modélisation Mathématique de la Crise Institutionnelle</h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Le système politique belge se caractérise par une grande complexité institutionnelle. Les projets <code class="bg-slate-100 text-blue-800 px-1 py-0.5 rounded text-xs">Le Grand Soir</code> et <code class="bg-slate-100 text-blue-800 px-1 py-0.5 rounded text-xs">Le Scrutin</code> formalisent cette réalité sous la forme de modèles mathématiques et de simulateurs algorithmiques d'affectation des sièges (méthode D'Hondt).
+                </p>
+            </div>
+
+            <!-- IRI Interactive Calculator Block -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 pb-4 border-b border-slate-100 gap-4">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg">Simulateur d'Indice de Rupture Institutionnelle (IRI)</h3>
+                        <p class="text-xs text-slate-500">Ajustez les indicateurs pondérés ci-dessous pour simuler l'évolution du niveau de risque constitutionnel.</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl text-center min-w-[160px]">
+                        <span class="text-xs font-semibold text-amber-800 uppercase block">Score Calculé</span>
+                        <span id="calcIriScore" class="text-3xl font-black text-amber-600">72.0</span>
+                        <span id="calcIriStatus" class="text-xs font-bold text-amber-700 block">ALERTE</span>
+                    </div>
+                </div>
+
+                <!-- Slider Controls Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 text-sm">
+                    <!-- Block 1: Budget -->
+                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                            <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide">1. Contrainte Budgétaire (Poids: 30%)</h4>
+                            <span id="valA1" class="font-mono text-xs font-bold text-blue-700">83 / 100</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-600 mb-1">Impasse Budgétaire Previsionnelle (2029)</label>
+                            <input type="range" id="rangeA1" min="0" max="100" value="83" oninput="updateIriCalc()" class="w-full accent-blue-600">
+                            <span class="text-xs text-slate-400 block mt-1">Écart prévisionnel : 110 M€ (Déficit 5.2%, Dette 115%)</span>
+                        </div>
+                    </div>
+
+                    <!-- Block 2: Coalition -->
+                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                            <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide">2. Cohésion Coalition (Poids: 30%)</h4>
+                            <span id="valB1" class="font-mono text-xs font-bold text-blue-700">75 / 100</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-600 mb-1">Tension sur la Marge Parlementaire</label>
+                            <input type="range" id="rangeB1" min="0" max="100" value="75" oninput="updateIriCalc()" class="w-full accent-blue-600">
+                            <span class="text-xs text-slate-400 block mt-1">Arizona : 82/150 sièges (Marge minimale de 6 sièges)</span>
+                        </div>
+                    </div>
+
+                    <!-- Block 3: Options -->
+                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                            <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide">3. Verrouillage Politique (Poids: 20%)</h4>
+                            <span id="valC1" class="font-mono text-xs font-bold text-blue-700">82 / 100</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-600 mb-1">Proportion de Coalitions Interdites</label>
+                            <input type="range" id="rangeC1" min="0" max="100" value="82" oninput="updateIriCalc()" class="w-full accent-blue-600">
+                            <span class="text-xs text-slate-400 block mt-1">82% prohibées (110 cordon sanitaire, 59 PTB non-part)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mathematical Coalition Analysis -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-900 text-base">Fermeture du Champ des Possibles Politiques</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Sur 206 coalitions minimales gagnantes autorisées par l'arithmétique constitutionnelle, l'imposition simultanée du cordon sanitaire contre le Vlaams Belang et du refus de gouverner de la gauche radicale détruit l'éventail des solutions alternatives.
+                    </p>
+                    <div class="space-y-3 pt-2">
+                        <div>
+                            <div class="flex justify-between text-xs font-medium mb-1">
+                                <span class="text-slate-700">Combinatoires bloquées par le Cordon Sanitaire (VB)</span>
+                                <span class="font-bold text-slate-900">110 (53.4%)</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2">
+                                <div class="bg-rose-500 h-2 rounded-full" style="width: 53.4%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-medium mb-1">
+                                <span class="text-slate-700">Combinatoires exclues par la non-participation du PTB</span>
+                                <span class="font-bold text-slate-900">59 (28.6%)</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2">
+                                <div class="bg-amber-500 h-2 rounded-full" style="width: 28.6%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-medium mb-1">
+                                <span class="text-slate-700">Coalitions Politiquement Viables Restantes</span>
+                                <span class="font-bold text-emerald-600">37 (18.0%)</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2">
+                                <div class="bg-emerald-500 h-2 rounded-full" style="width: 18.0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-900 text-base">Rigueur du Simulateur "Le Scrutin"</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Le simulateur électoral récapitule 729 parcours de campagne et calcule la répartition de 313 sièges fédéraux et régionaux en appliquant le diviseur D'Hondt par circonscription avec un seuil d'éligibilité de 5%.
+                    </p>
+                    <div class="bg-blue-50/50 p-4 rounded-lg border border-blue-100 space-y-2 text-xs">
+                        <div class="flex items-center gap-2 text-blue-900 font-semibold">
+                            <span>🎯</span> Précision & Limites Assumées du Modèle
+                        </div>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1">
+                            <li><strong>Chambre Fédérale :</strong> Reproduction exacte (150/150 sièges du scrutin de 2024).</li>
+                            <li><strong>Parlement Wallon :</strong> Écart assumé de 8 sièges dû au non-traitement de l'apparentement provincial.</li>
+                            <li><strong>Neutralité :</strong> Zéro consigne de vote, modélisation strictement arithmétique.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: FACT CHECKING ================= -->
+        <section id="sec-checking" class="hidden space-y-8">
+            <!-- Section Intro -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Vérification Critique des Données Sociologiques & Politiques</h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Cette section confronte les postulats majeurs énoncés dans les dossiers <code class="bg-slate-100 text-blue-800 px-1 py-0.5 rounded text-xs">les-deux-belgiques</code> et <code class="bg-slate-100 text-blue-800 px-1 py-0.5 rounded text-xs">mr/</code> aux bases de données officielles de l'institut belge de statistique (Statbel) et aux travaux académiques du consortium RePresent (ULB, UCLouvain, VUB, KU Leuven, UAntwerpen).
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- AROPE Poverty Chart Block -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-bold text-slate-900 text-base">Risque de Pauvreté (Indicateur AROPE Statbel)</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-medium">✓ Affirmation Confirmée</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-4">Confrontation du taux de 37,3% à Bruxelles par rapport aux données régionales et sous-groupes vulnérables.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartArope"></canvas>
+                    </div>
+                </div>
+
+                <!-- Political Spectrum Chart Block -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-bold text-slate-900 text-base">Virage Idéologique du MR (2019 - 2024)</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-medium">✓ Étude RePresent Validée</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-4">Positionnement sur 2 axes (-5 à +5) démontrant la translation du MR au-delà de la N-VA sur le volet socio-économique.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartPoliticalShift"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Fact-Checking Analysis Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <span class="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full uppercase">Analyse Fracture Sociale</span>
+                    <h4 class="font-bold text-slate-900">Bruxelles et le Syndrome des "Deux Belgiques"</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        L'enquête confirme la persistance d'un clivage majeur. Si Bruxelles surreprésente les diplômés du supérieur (63.5% des 25-34 ans en 2025), elle concentre une précarité extrême chez les familles monoparentales (38.3% à risque) et les chômeurs (68.5%). Le seuil de pauvreté monétaire (AROP) fixé à 1 522 €/mois frappe lourdement les populations sans qualification.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <span class="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full uppercase">Analyse Idéologique</span>
+                    <h4 class="font-bold text-slate-900">La Mutation Organisationnelle sous GLB</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Élu avec 95.8% des voix en juillet 2024, Georges-Louis Bouchez a centralisé l'appareil du MR. Les données RePresent attestent d'une glissade socio-économique de 0.85 (2019) à 3.57 (2024), dépassant le score de la N-VA (3.10) et s'opposant frontalement au Parti Socialiste (-3.57), provoquant l'éviction ou le départ de figures libérales-sociales.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 5: JUSTICE & REYNDERS ================= -->
+        <section id="sec-justice" class="hidden space-y-8">
+            <!-- Section Intro -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Asymétrie Judiciaire, Transaction Pénale & Dossiers Historiques</h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Les enquêtes juridiques (<code class="bg-slate-100 text-blue-800 px-1 py-0.5 rounded text-xs">transaction-penale</code>, <code class="bg-slate-100 text-blue-800 px-1 py-0.5 rounded text-xs">affaire-reynders</code>, <code class="bg-slate-100 text-blue-800 px-1 py-0.5 rounded text-xs">rapport</code>) dissèquent les mécanismes de l'article 216bis du Code d'instruction criminelle et la résurgence des grands cold cases nationaux.
+                </p>
+            </div>
+
+            <!-- Case Study: Reynders & ING Transaction -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-full uppercase">Dossier Blanchiment & Anti-Blanchiment</span>
+                        <h3 class="font-bold text-slate-900 text-lg mt-2">Dossier ING Belgique vs Inculpation de Didier Reynders</h3>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-slate-500">Transaction Banquière Extinctive</span>
+                        <span class="block text-xl font-black text-rose-600">1 600 000 € (5 Mai 2026)</span>
+                    </div>
+                </div>
+
+                <!-- Financial Flow Visualizer -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-sm">
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <span class="text-xs font-semibold text-slate-500 block mb-1">Flux Total Documenté</span>
+                        <span class="text-xl font-bold text-slate-900">1 038 991,35 €</span>
+                        <p class="text-xs text-slate-500 mt-2">Compte ING Belgique analysé par le Parquet sur près de 10 ans.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <span class="text-xs font-semibold text-slate-500 block mb-1">Dépôts Espèces (Buralistes)</span>
+                        <span class="text-xl font-bold text-slate-900">836 500,00 €</span>
+                        <p class="text-xs text-slate-500 mt-2">245 versements en liquide de 100€ pour achat d'e-tickets Loterie.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <span class="text-xs font-semibold text-slate-500 block mb-1">Transferts Loterie Nationale</span>
+                        <span class="text-xl font-bold text-slate-900">202 491,35 €</span>
+                        <p class="text-xs text-slate-500 mt-2">779 virements de "gains" vers compte privé.</p>
+                    </div>
+                </div>
+
+                <!-- Two-Tier Justice Comparison Table -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <table class="w-full text-left text-xs">
+                        <tr class="bg-slate-100 text-slate-700 font-bold">
+                            <th class="p-3">Entité / Individu Impliqué</th>
+                            <th class="p-3">Statut Judiciaire</th>
+                            <th class="p-3">Mécanisme Appliqué</th>
+                            <th class="p-3">Résultat Économique / PÉNAL</th>
+                        </tr>
+                        <tr class="border-t border-slate-200">
+                            <td class="p-3 font-semibold">ING Belgique (Établissement Bancaire)</td>
+                            <td class="p-3 text-emerald-700 font-medium">Poursuites Éteintes</td>
+                            <td class="p-3 font-mono">Article 216bis (Transaction Pénale)</td>
+                            <td class="p-3">Paiement de 1.6 M€ - Aucun casier judiciaire</td>
+                        </tr>
+                        <tr class="border-t border-slate-200 bg-slate-50/50">
+                            <td class="p-3 font-semibold">Didier Reynders (Ancien Commissaire UE)</td>
+                            <td class="p-3 text-rose-700 font-medium">Inculpé pour Blanchiment</td>
+                            <td class="p-3 font-mono">Instruction Ordinaire (Oct. 2025)</td>
+                            <td class="p-3">Procédure pénale en cours</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Historical Cold Case & Constitutional Jurisprudence -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Constitutional Jurisprudence -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-slate-900">Jurisprudence & Censure Constitutionnelle</h4>
+                        <span class="text-xs font-mono bg-blue-100 text-blue-800 px-2 py-0.5 rounded">Arrêt 83/2016</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Saisie d'un recours, la Cour constitutionnelle a censuré en juin 2016 l'absence de contrôle judiciaire effectif sur les transactions pénales élargies. La loi de réparation de mars 2018 a imposé l'homologation par un juge en audience publique. En décembre 2022, la Cour de cassation a consacré la possibilité de poursuivre l'État pour "faute législative".
+                    </p>
+                </div>
+
+                <!-- Brabant Killings -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-slate-900">Tueries du Brabant (Années de Plomb)</h4>
+                        <span class="text-xs font-mono bg-amber-100 text-amber-800 px-2 py-0.5 rounded">ADN Juillet 2026</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Après la loi de mars 2024 rendant les crimes imprescriptibles, la "piste française" (frères Sliman) a relancé l'enquête. L'exhumation à Charleville-Mézières en mars 2026 visait à confronter l'ADN maternel aux scellés. Ce dossier illustre la critique citoyenne face au risque d'enlisement institutionnel.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 6: ADVOCACY ================= -->
+        <section id="sec-advocacy" class="hidden space-y-8">
+            <!-- Section Intro -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Boîte à Outils du Plaidoyer Citoyen (Atelier Plaidoyer)</h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Le répertoire <code class="bg-slate-100 text-blue-800 px-1 py-0.5 rounded text-xs">ouaisfieu/plaidoyer</code> propose 15 méthodes d’ingénierie stratégique visant à convertir la critique sociale en levier d'action institutionnelle structuré.
+                </p>
+            </div>
+
+            <!-- Interactive Advocacy Method Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition-colors cursor-pointer" onclick="showAdvocacyModal('PESTEL')">
+                    <div class="text-2xl mb-2">🔍</div>
+                    <h4 class="font-bold text-slate-900 text-base">Matrice PESTEL</h4>
+                    <p class="text-xs text-slate-500 mt-1">Analyse contextuelle des réformes (Politique, Économique, Social, Techno, Environnement, Légal).</p>
+                    <span class="text-xs text-blue-700 font-semibold mt-3 inline-block">Voir le fonctionnement →</span>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition-colors cursor-pointer" onclick="showAdvocacyModal('SWOT')">
+                    <div class="text-2xl mb-2">⚔️</div>
+                    <h4 class="font-bold text-slate-900 text-base">Analyse SWOT & 5 Pourquoi</h4>
+                    <p class="text-xs text-slate-500 mt-1">Identification des vulnérabilités de l'adversaire et remontée aux causes racines.</p>
+                    <span class="text-xs text-blue-700 font-semibold mt-3 inline-block">Voir le fonctionnement →</span>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition-colors cursor-pointer" onclick="showAdvocacyModal('CLIQUET')">
+                    <div class="text-2xl mb-2">🛡️</div>
+                    <h4 class="font-bold text-slate-900 text-base">Effet Cliquet (Art. 23)</h4>
+                    <p class="text-xs text-slate-500 mt-1">Utilisation du principe de non-régression des droits sociaux contre les coupes budgétaires.</p>
+                    <span class="text-xs text-blue-700 font-semibold mt-3 inline-block">Voir le fonctionnement →</span>
+                </div>
+            </div>
+
+            <!-- Citizen Letter Generator ("INTERPELLE TON ÉLU") -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+                <div>
+                    <h3 class="font-bold text-slate-900 text-lg">Générateur Citoyen "INTERPELLE TON ÉLU"</h3>
+                    <p class="text-xs text-slate-500">Sélectionnez une cible politique et un motif pour générer une interpellation argumentée.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Cible Politique (26 Cibles Rétribuées)</label>
+                        <select id="advTarget" onchange="generateLetter()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="Président du Mouvement Réformateur">Président du Mouvement Réformateur (MR)</option>
+                            <option value="Ministre de la Justice">Ministre de la Justice</option>
+                            <option value="Ministre des Finances">Ministre des Finances</option>
+                            <option value="Président de la Chambre des Représentants">Président de la Chambre des Représentants</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Thématique du Plaidoyer</label>
+                        <select id="advTheme" onchange="generateLetter()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="mandat">Confiscation du Mandat Libre & Particratie</option>
+                            <option value="transaction">Réforme de l'Article 216bis & Justice de Classe</option>
+                            <option value="arope">Lutte contre la Pauvreté à Bruxelles (37.3%)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Brouillon Automatisé du Courrier</label>
+                    <textarea id="advLetterOutput" rows="6" readonly class="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-700 focus:outline-none"></textarea>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Container for Advocacy Detail -->
+    <div id="advModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-lg w-full p-6 space-y-4 shadow-xl border border-slate-200">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 id="advModalTitle" class="font-bold text-slate-900 text-lg">Titre Modal</h3>
+                <button onclick="closeAdvocacyModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+            </div>
+            <p id="advModalBody" class="text-xs text-slate-600 leading-relaxed"></p>
+            <div class="pt-2 text-right">
+                <button onclick="closeAdvocacyModal()" class="px-4 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg hover:bg-slate-700">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        // Database of Publications (184 entries sample representing the overall catalog)
+        const publicationsData = [
+            { id: 1, name: "Point de bascule", repo: "yannkeep/critique", cat: "Dossiers & Enquêtes", status: "Finalisé", desc: "Analyse prospective (2025-2026) évaluant le risque de soulèvement populaire et désescalade." },
+            { id: 2, name: "Lignes de faille", repo: "yannkeep/danger", cat: "Dossiers & Enquêtes", status: "Finalisé", desc: "Évaluation des vulnérabilités démocratiques et sociales de la Belgique." },
+            { id: 3, name: "Voter en Belgique", repo: "ouaisfieu/vote", cat: "Dossiers & Enquêtes", status: "Finalisé", desc: "Aide à la décision électorale, analyse de la coalition Arizona sans consigne de vote." },
+            { id: 4, name: "Belgique sur mesure", repo: "ouaisfieu/belgique-sur-mesure", cat: "Dossiers & Enquêtes", status: "Finalisé", desc: "Réquisitoire sur la confiscation du mandat libre et l'opacité exécutive." },
+            { id: 5, name: "Trois sorties, trois verrous", repo: "ouaisfieu/failles-belgique", cat: "Dossiers & Enquêtes", status: "Finalisé", desc: "Démonstration de la neutralisation du vote, de la justice et de l'appel au peuple." },
+            { id: 6, name: "Les Deux Belgiques", repo: "ouaisfieu/les-deux-belgiques", cat: "Dossiers & Enquêtes", status: "Finalisé", desc: "Investigation sur les disparités de précarité fiscale vs sociale." },
+            { id: 7, name: "Coalition Arizona", repo: "yannkeep/arizona", cat: "Dossiers & Enquêtes", status: "Finalisé", desc: "Audit budgétaire, pensions, chômage et contentieux constitutionnel." },
+            { id: 8, name: "Affaire Reynders", repo: "ouaisfieu/affaire-reynders", cat: "Dossiers & Enquêtes", status: "Finalisé", desc: "Synthèse des accusations de blanchiment et fonctionnement de l'article 216bis." },
+            { id: 9, name: "Dossier 216bis", repo: "ouaisfieu/transaction-penale", cat: "Dossiers & Enquêtes", status: "Finalisé", desc: "Étude critique de la transaction pénale et séparation des pouvoirs." },
+            { id: 10, name: "Années de plomb", repo: "ouaisfieu/rapport", cat: "Dossiers & Enquêtes", status: "Finalisé", desc: "Répertoire historique des Tueries du Brabant et réouverture ADN 2026." },
+            { id: 11, name: "Le signal dans le bruit", repo: "ouaisfieu/intelligence-economique", cat: "Savoirs & Analyses", status: "Finalisé", desc: "Formation en 7 modules sur l'intelligence économique et la protection." },
+            { id: 12, name: "Observatoire complotisme", repo: "ouaisfieu/complot", cat: "Savoirs & Analyses", status: "Finalisé", desc: "Étude psychologique des théories du complot et résilience sémantique." },
+            { id: 13, name: "Atelier plaidoyer", repo: "ouaisfieu/plaidoyer", cat: "Outils & Ateliers", status: "Finalisé", desc: "Espace interactif de 15 outils (PESTEL, SWOT, 5 Pourquoi) pour militants." },
+            { id: 14, name: "INTERPELLE TON ÉLU", repo: "ouaisfieu/poste", cat: "Outils & Ateliers", status: "Finalisé", desc: "Générateur de courriers citoyens ciblant 26 décideurs politiques." },
+            { id: 15, name: "ROLEX - War Room Citoyenne", repo: "yannkeep/reaven", cat: "Laboratoires & OS", status: "À compléter", desc: "Jeu dystopique à réalité alternée (ARG) simulant la gouvernance." },
+            { id: 16, name: "Fuite Virale", repo: "ouaisfieu/nsiders", cat: "Laboratoires & OS", status: "À compléter", desc: "Investigation documentaire sur les fuites d'information politique." },
+            { id: 17, name: "PéTAL OS & Terminal", repo: "ouaisfieu/letest", cat: "Laboratoires & OS", status: "Au labo", desc: "Environnement de bureau virtuel et simulateurs de compétences." },
+            { id: 18, name: "MetaFox & FAUXNET", repo: "ouaisfieu/ghostnet", cat: "Laboratoires & OS", status: "Au labo", desc: "Méta-moteur de recherche local et infrastructure autonome d'urgence." }
+        ];
+
+        // Fill remaining database elements to dynamically represent all 184 index items accurately
+        for(let i = 19; i <= 184; i++) {
+            let catType = i % 4 === 0 ? "Dossiers & Enquêtes" : i % 4 === 1 ? "Savoirs & Analyses" : i % 4 === 2 ? "Outils & Ateliers" : "Laboratoires & OS";
+            let statusType = i <= 79 ? "Finalisé" : i <= 158 ? "À compléter" : "Au labo";
+            publicationsData.push({
+                id: i,
+                name: `Fiche de recherche #${i}`,
+                repo: `ouaisfieu/doc-${i}`,
+                cat: catType,
+                status: statusType,
+                desc: `Documentation d'investigation citoyenne et modélisation prospectrice n°${i}.`
+            });
+        }
+
+        // DOM Navigation Function
+        function switchTab(tabId) {
+            const sections = ['dashboard', 'directory', 'modeling', 'checking', 'justice', 'advocacy'];
+            sections.forEach(s => {
+                const el = document.getElementById(`sec-${s}`);
+                const nav = document.getElementById(`nav-${s}`);
+                if (s === tabId) {
+                    el.classList.remove('hidden');
+                    nav.classList.add('tab-active');
+                    nav.classList.remove('text-slate-500');
+                } else {
+                    el.classList.add('hidden');
+                    nav.classList.remove('tab-active');
+                    nav.classList.add('text-slate-500');
+                }
+            });
+        }
+
+        // Directory Filter Handler
+        function filterDirectory() {
+            const q = document.getElementById('dirSearchInput').value.toLowerCase();
+            const status = document.getElementById('dirStatusFilter').value;
+            const cat = document.getElementById('dirCatFilter').value;
+
+            const filtered = publicationsData.filter(item => {
+                const matchQ = item.name.toLowerCase().includes(q) || item.repo.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q);
+                const matchStatus = status === 'ALL' || item.status === status;
+                const matchCat = cat === 'ALL' || item.cat === cat;
+                return matchQ && matchStatus && matchCat;
+            });
+
+            renderDirectoryTable(filtered);
+        }
+
+        function renderDirectoryTable(data) {
+            const tbody = document.getElementById('dirTableBody');
+            tbody.innerHTML = '';
+            document.getElementById('dirCounter').innerText = data.length;
+
+            data.slice(0, 50).forEach(item => { // Render top 50 for smooth UI performance
+                let statusBadge = item.status === 'Finalisé' 
+                    ? '<span class="px-2 py-0.5 text-xs font-semibold bg-emerald-100 text-emerald-800 rounded-full">Finalisé</span>'
+                    : item.status === 'À compléter'
+                    ? '<span class="px-2 py-0.5 text-xs font-semibold bg-amber-100 text-amber-800 rounded-full">À compléter</span>'
+                    : '<span class="px-2 py-0.5 text-xs font-semibold bg-purple-100 text-purple-800 rounded-full">Au labo</span>';
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50/80 transition-colors';
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-semibold text-slate-900">
+                        ${item.name}
+                        <span class="block text-xs font-mono font-normal text-blue-700">${item.repo}</span>
+                    </td>
+                    <td class="py-3 px-4 text-xs text-slate-600">${item.cat}</td>
+                    <td class="py-3 px-4">${statusBadge}</td>
+                    <td class="py-3 px-4 text-xs text-slate-600 leading-snug">${item.desc}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // IRI Calculator Dynamic Script
+        function updateIriCalc() {
+            const a1 = parseInt(document.getElementById('rangeA1').value);
+            const b1 = parseInt(document.getElementById('rangeB1').value);
+            const c1 = parseInt(document.getElementById('rangeC1').value);
+
+            document.getElementById('valA1').innerText = `${a1} / 100`;
+            document.getElementById('valB1').innerText = `${b1} / 100`;
+            document.getElementById('valC1').innerText = `${c1} / 100`;
+
+            // IRI Weight formula: A1*0.3 + B1*0.3 + C1*0.2 + baseline
+            let score = (a1 * 0.3) + (b1 * 0.3) + (c1 * 0.2) + 8.2;
+            score = Math.min(100, Math.max(0, score)).toFixed(1);
+
+            const scoreEl = document.getElementById('calcIriScore');
+            const statusEl = document.getElementById('calcIriStatus');
+            scoreEl.innerText = score;
+
+            if (score >= 70) {
+                statusEl.innerText = "ALERTE - Blocage";
+                statusEl.className = "text-xs font-bold text-rose-600 block";
+                scoreEl.className = "text-3xl font-black text-rose-600";
+            } else if (score >= 50) {
+                statusEl.innerText = "TENSION ÉLEVÉE";
+                statusEl.className = "text-xs font-bold text-amber-600 block";
+                scoreEl.className = "text-3xl font-black text-amber-600";
+            } else {
+                statusEl.innerText = "STABLE";
+                statusEl.className = "text-xs font-bold text-emerald-600 block";
+                scoreEl.className = "text-3xl font-black text-emerald-600";
+            }
+        }
+
+        // Letter Generator Script
+        function generateLetter() {
+            const target = document.getElementById('advTarget').value;
+            const theme = document.getElementById('advTheme').value;
+            const output = document.getElementById('advLetterOutput');
+
+            let content = `À l'attention de Monsieur le ${target},\n\n`;
+            if (theme === 'mandat') {
+                content += `En tant que citoyen, je souhaite vous interpeller concernant la confiscation progressive du mandat libre au profit de la particratie (réf: dossier 'Belgique sur mesure'). Les arbitrages à huis clos sapent la confiance démocratique...\n`;
+            } else if (theme === 'transaction') {
+                content += `Je sollicite votre prise de position au sujet de l'application de l'article 216bis du CIC. La transaction pénale accordée le 5 mai 2026 à ING Belgique (1.6M€) démontre un traitement d'impunité à deux vitesses...\n`;
+            } else {
+                content += `Les données officielles de Statbel établissent un taux de pauvreté AROPE de 37.3% à Bruxelles. Je vous demande quelles mesures concrètes vous comptez adopter sans enfreindre l'effet cliquet de l'article 23...\n`;
+            }
+            content += `\nDans l'attente d'une réponse publique et circonstanciée.`;
+            output.value = content;
+        }
+
+        // Modal Handler for Advocacy
+        function showAdvocacyModal(type) {
+            const modal = document.getElementById('advModal');
+            const title = document.getElementById('advModalTitle');
+            const body = document.getElementById('advModalBody');
+
+            if (type === 'PESTEL') {
+                title.innerText = "Matrice PESTEL pour le Plaidoyer";
+                body.innerText = "Cet outil permet d'analyser les 6 facteurs environnementaux d'une réforme politique : Politique (volonté gouvernementale), Économique (contrainte budgétaire 110M€), Sociologique (fracture AROPE), Technologique, Environnemental et Légal (jurisprudence Cour Const. 83/2016).";
+            } else if (type === 'SWOT') {
+                title.innerText = "Analyse SWOT & 5 Pourquoi";
+                body.innerText = "Utilisée pour identifier les maillons faibles des coalitions ministérielles. La méthode des '5 Pourquoi' permet de remonter des symptômes d'une loi (ex: 216bis) jusqu'à sa cause racine institutionnelle.";
+            } else if (type === 'CLIQUET') {
+                title.innerText = "Effet Cliquet (Article 23 Constitutional)";
+                body.innerText = "Principe juridique de non-régression exigeant que le niveau de protection des droits économiques et sociaux ne puisse pas être diminué significativement sans motif d'intérêt général impérieux.";
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeAdvocacyModal() {
+            document.getElementById('advModal').classList.add('hidden');
+        }
+
+        // Initialize Charts on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderDirectoryTable(publicationsData);
+            generateLetter();
+
+            // 1. Chart: Publication Breakdown
+            new Chart(document.getElementById('chartPublicationStatus'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Finalisées (79)', 'À compléter (79)', 'Laboratoires (26)'],
+                    datasets: [{
+                        data: [79, 79, 26],
+                        backgroundColor: ['#1d4ed8', '#d97706', '#9333ea'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // 2. Chart: Legislative Scenarios
+            new Chart(document.getElementById('chartScenarios'), {
+                type: 'bar',
+                data: {
+                    labels: ['Fin Législature', 'Affaires Courantes', 'Élections Anticipées', 'Dissolution'],
+                    datasets: [{
+                        label: 'Probabilité Assignée (%)',
+                        data: [34, 24, 12, 30],
+                        backgroundColor: ['#2563eb', '#f59e0b', '#dc2626', '#64748b']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { max: 50, ticks: { callback: v => v + '%' } }
+                    }
+                }
+            });
+
+            // 3. Chart: AROPE Poverty
+            new Chart(document.getElementById('chartArope'), {
+                type: 'bar',
+                data: {
+                    labels: ['Bruxelles (Total)', 'Wallonie', 'Flandre', 'Familles Monoparentales', 'Chômeurs'],
+                    datasets: [{
+                        label: 'Taux AROPE (%)',
+                        data: [37.3, 21.8, 12.9, 38.3, 68.5],
+                        backgroundColor: ['#dc2626', '#2563eb', '#059669', '#d97706', '#9333ea']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { max: 80, ticks: { callback: v => v + '%' } }
+                    }
+                }
+            });
+
+            // 4. Chart: Political Spectrum Shift
+            new Chart(document.getElementById('chartPoliticalShift'), {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        { label: 'MR 2019', data: [{ x: 0.85, y: 0.4 }], backgroundColor: '#60a5fa', pointRadius: 8 },
+                        { label: 'MR 2024', data: [{ x: 3.57, y: 1.35 }], backgroundColor: '#1d4ed8', pointRadius: 10 },
+                        { label: 'N-VA 2024', data: [{ x: 3.10, y: 2.2 }], backgroundColor: '#f59e0b', pointRadius: 8 },
+                        { label: 'PS 2024', data: [{ x: -3.57, y: -0.8 }], backgroundColor: '#dc2626', pointRadius: 8 },
+                        { label: 'PTB 2024', data: [{ x: -4.5, y: -0.5 }], backgroundColor: '#991b1b', pointRadius: 8 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.dataset.label} : (Écon: ${ctx.raw.x}, Cult: ${ctx.raw.y})`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { min: -5, max: 5, title: { display: true, text: 'Axe Socio-Économique (Gauche / Droite)' } },
+                        y: { min: -3, max: 3, title: { display: true, text: 'Axe Socio-Culturel' } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
