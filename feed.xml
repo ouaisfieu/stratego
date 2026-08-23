@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Stratego — anatomie d'une stratégie d'évaporation</title>
+    <link>https://ouaisfieu.github.io/stratego/</link>
+    <atom:link href="https://ouaisfieu.github.io/stratego/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Enquête documentaire sur la stratégie d'évaporation de l'État belge conduite par la N-VA de Bart De Wever.</description>
+    <language>fr-be</language>
+    <copyright>CC BY 4.0</copyright>
+    <lastBuildDate>Sat, 22 Aug 2026 12:00:00 +0000</lastBuildDate>
+    <item>
+      <title>L’évaporation comme doctrine</title>
+      <link>https://ouaisfieu.github.io/stratego/doctrine/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/doctrine/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Généalogie de la doctrine de l’évaporation de l’État belge : la « conférence diplomatique permanente » de 2008, le double transfert vers l’Europe et vers les Régions, et le basculement du nationalisme romantique au nationalisme rationnel.</description>
+    </item>
+    <item>
+      <title>L’ingénierie de la coquille vide</title>
+      <link>https://ouaisfieu.github.io/stratego/confederalisme/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/confederalisme/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Analyse juridique du projet confédéral de la N-VA : inversion des compétences résiduelles, article 35 de la Constitution, parité, budget central plafonné, statut de la monarchie. Comparaison avec l’État fédéral actuel.</description>
+    </item>
+    <item>
+      <title>La doctrine Maddens</title>
+      <link>https://ouaisfieu.github.io/stratego/maddens/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/maddens/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Analyse de la doctrine Maddens, formulée en 2009 par le politologue Bart Maddens : cesser d’être demandeur, exploiter l’autonomie existante, assécher les ressources fédérales et monétiser la solidarité. Portée réelle et limites de la thèse.</description>
+    </item>
+    <item>
+      <title>L’occupation du fort</title>
+      <link>https://ouaisfieu.github.io/stratego/occupation/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/occupation/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Chômage limité à deux ans, réforme des pensions, indexation plafonnée, soins de santé : ce que la coalition Arizona a réellement fait depuis février 2025, et ce que les données disent de l’asymétrie régionale de ses effets.</description>
+    </item>
+    <item>
+      <title>L’évaporation furtive</title>
+      <link>https://ouaisfieu.github.io/stratego/institutions/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/institutions/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Suppression du Sénat votée le 3 juillet 2026, projet de rééquilibrage du Comité de concertation en faveur des entités fédérées, prise de contrôle flamande de Brussels Airport : trois transformations institutionnelles obtenues sans révision confédérale.</description>
+    </item>
+    <item>
+      <title>Le nœud gordien</title>
+      <link>https://ouaisfieu.github.io/stratego/bruxelles/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/bruxelles/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Pourquoi Bruxelles bloque tout projet de scission de la Belgique : enclave francophone en territoire flamand, bassin d’emploi de centaines de milliers de navetteurs, siège des institutions européennes. Le dispositif des sous-nationalités et ses objections juridiques.</description>
+    </item>
+    <item>
+      <title>Ce qui manque pour scinder</title>
+      <link>https://ouaisfieu.github.io/stratego/verrous/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/verrous/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Inventaire des conditions non remplies d’une scission de la Belgique : partage de la dette publique, statut de Bruxelles, incertitude sur le maintien dans l’Union européenne, opinion publique minoritaire. Et la leçon oubliée du Katanga.</description>
+    </item>
+    <item>
+      <title>Le dossier contradictoire</title>
+      <link>https://ouaisfieu.github.io/stratego/contre-analyse/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/contre-analyse/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Restitution argumentée du projet confédéral tel que ses défenseurs le formulent, suivie des objections les plus solides qui lui sont opposées : mythe des transferts, cycles économiques, coût de la séparation, critique du fédéralisme belge.</description>
+    </item>
+    <item>
+      <title>Quatre scénarios falsifiables</title>
+      <link>https://ouaisfieu.github.io/stratego/scenarios/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/scenarios/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Prospective raisonnée sur l’avenir du gouvernement De Wever et de l’État belge : implosion juridique, rupture budgétaire, gouvernement zombie, dissolution suspendue. Chaque scénario est assorti d’indicateurs qui permettront de le réfuter.</description>
+    </item>
+    <item>
+      <title>Chronologie 2001 → 2026</title>
+      <link>https://ouaisfieu.github.io/stratego/chronologie/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/chronologie/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Chronologie documentée des étapes de l’évaporation de l’État belge, de la fondation de la N-VA en 2001 au vote de la révision de l’article 195 le 3 juillet 2026.</description>
+    </item>
+    <item>
+      <title>Chiffres et fiabilité</title>
+      <link>https://ouaisfieu.github.io/stratego/donnees/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/donnees/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Toutes les données chiffrées utilisées sur ce site : finances publiques belges 2025-2031, exclusions du chômage, sondages régionaux, transferts financiers. Avec leur source, leur date, leurs révisions et les précautions d’usage.</description>
+    </item>
+    <item>
+      <title>Le vocabulaire de la crise</title>
+      <link>https://ouaisfieu.github.io/stratego/lexique/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/lexique/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Définitions claires des termes du débat institutionnel belge : évaporation, confédéralisme, compétences résiduelles, doctrine Maddens, kern, Codeco, standstill, particratie, subalternisation, doctrine Barroso.</description>
+    </item>
+    <item>
+      <title>Méthode, réflexivité et limites</title>
+      <link>https://ouaisfieu.github.io/stratego/methode/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/methode/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Note de méthode complète du dossier Stratego : origine du corpus, rôle de l’intelligence artificielle dans sa production, système de marqueurs de confiance, biais assumés, angles morts, et journal public des treize corrections apportées aux documents fondateurs.</description>
+    </item>
+    <item>
+      <title>Bibliographie</title>
+      <link>https://ouaisfieu.github.io/stratego/sources/</link>
+      <guid isPermaLink="true">https://ouaisfieu.github.io/stratego/sources/</guid>
+      <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Bibliographie complète du dossier Stratego : sources institutionnelles belges et européennes, travaux académiques, presse francophone et néerlandophone, documents de partis et de syndicats.</description>
+    </item>
+  </channel>
+</rss>

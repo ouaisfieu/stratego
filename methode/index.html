@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="fr-BE" prefix="og: https://ogp.me/ns#">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Note de méthode — corpus, biais, corrections, auteur</title>
+<meta name="description" content="Note de méthode complète du dossier Stratego : origine du corpus, rôle de l’intelligence artificielle dans sa production, système de marqueurs de confiance, biais assumés, angles morts, et journal public des treize corrections apportées aux documents fondateurs.">
+<link rel="canonical" href="https://ouaisfieu.github.io/stratego/methode/">
+<link rel="alternate" hreflang="fr-be" href="https://ouaisfieu.github.io/stratego/methode/">
+<link rel="alternate" hreflang="x-default" href="https://ouaisfieu.github.io/stratego/methode/">
+<meta name="author" content="Claude (Anthropic)">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#0d1015">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Stratego">
+<meta property="og:locale" content="fr_BE">
+<meta property="og:title" content="Méthode, réflexivité et limites">
+<meta property="og:description" content="Note de méthode complète du dossier Stratego : origine du corpus, rôle de l’intelligence artificielle dans sa production, système de marqueurs de confiance, biais assumés, angles morts, et journal public des treize corrections apportées aux documents fondateurs.">
+<meta property="og:url" content="https://ouaisfieu.github.io/stratego/methode/">
+<meta property="og:image" content="https://ouaisfieu.github.io/stratego/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Stratego — anatomie d'une stratégie d'évaporation de l’État belge">
+<meta property="article:published_time" content="2026-08-22">
+<meta property="article:modified_time" content="2026-08-22">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Méthode, réflexivité et limites">
+<meta name="twitter:description" content="Note de méthode complète du dossier Stratego : origine du corpus, rôle de l’intelligence artificielle dans sa production, système de marqueurs de confiance, biais assumés, angles morts, et journal public des treize corrections apportées aux documents fondateurs.">
+<meta name="twitter:image" content="https://ouaisfieu.github.io/stratego/assets/img/og.png">
+<meta name="dcterms.rights" content="CC BY 4.0">
+<meta name="dcterms.language" content="fr-BE">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="Stratego — mises à jour" href="https://ouaisfieu.github.io/stratego/feed.xml">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebSite",
+   "@id": "https://ouaisfieu.github.io/stratego/#website",
+   "url": "https://ouaisfieu.github.io/stratego/",
+   "name": "Stratego",
+   "alternateName": "Stratego — Anatomie d’une stratégie d’évaporation",
+   "inLanguage": "fr-BE",
+   "description": "Enquête documentaire sur la stratégie d’évaporation de l’État belge conduite par la N-VA de Bart De Wever.",
+   "license": "https://creativecommons.org/licenses/by/4.0/deed.fr",
+   "publisher": {
+    "@id": "https://ouaisfieu.github.io/stratego/#publisher"
+   },
+   "isAccessibleForFree": true
+  },
+  {
+   "@type": "Organization",
+   "@id": "https://ouaisfieu.github.io/stratego/#publisher",
+   "name": "Stratego",
+   "url": "https://ouaisfieu.github.io/stratego/"
+  },
+  {
+   "@type": "Person",
+   "@id": "https://ouaisfieu.github.io/stratego/#author",
+   "name": "Claude (Anthropic)",
+   "description": "Modèle de langage d’Anthropic, auteur de la rédaction et de l’appareil critique de ce site.",
+   "url": "https://www.anthropic.com/claude"
+  },
+  {
+   "@type": "Article",
+   "@id": "https://ouaisfieu.github.io/stratego/methode/#page",
+   "url": "https://ouaisfieu.github.io/stratego/methode/",
+   "name": "Note de méthode — corpus, biais, corrections, auteur",
+   "headline": "Qui écrit, à partir de quoi, avec quels biais — et la liste des corrections",
+   "description": "Note de méthode complète du dossier Stratego : origine du corpus, rôle de l’intelligence artificielle dans sa production, système de marqueurs de confiance, biais assumés, angles morts, et journal public des treize corrections apportées aux documents fondateurs.",
+   "inLanguage": "fr-BE",
+   "isPartOf": {
+    "@id": "https://ouaisfieu.github.io/stratego/#website"
+   },
+   "datePublished": "2026-08-22",
+   "dateModified": "2026-08-22",
+   "author": {
+    "@id": "https://ouaisfieu.github.io/stratego/#author"
+   },
+   "publisher": {
+    "@id": "https://ouaisfieu.github.io/stratego/#publisher"
+   },
+   "license": "https://creativecommons.org/licenses/by/4.0/deed.fr",
+   "isAccessibleForFree": true,
+   "keywords": "méthodologie, réflexivité, vérification des faits, corrections, biais, intelligence artificielle, transparence éditoriale",
+   "breadcrumb": {
+    "@id": "https://ouaisfieu.github.io/stratego/methode/#breadcrumb"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Accueil",
+     "item": "https://ouaisfieu.github.io/stratego/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Méthode",
+     "item": "https://ouaisfieu.github.io/stratego/methode/"
+    }
+   ],
+   "@id": "https://ouaisfieu.github.io/stratego/methode/#breadcrumb"
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a class="brand" href="../" aria-label="Stratego, accueil">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" focusable="false" aria-hidden="true"><path d="M12 2 3 6.5v5.2C3 17 6.8 21 12 22c5.2-1 9-5 9-10.3V6.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 7.5v9M7.8 10.2h8.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </span>
+      <span class="brand-text"><b>Stratego</b><small>Anatomie d’une stratégie d’évaporation</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Rubriques principales">
+      <ul>
+        <li><a href="../doctrine/">Doctrine</a></li>
+        <li><a href="../confederalisme/">Confédéralisme</a></li>
+        <li><a href="../maddens/">Doctrine Maddens</a></li>
+        <li><a href="../occupation/">Occupation du fort</a></li>
+        <li><a href="../institutions/">Institutions</a></li>
+        <li><a href="../bruxelles/">Bruxelles</a></li>
+        <li><a href="../verrous/">Verrous</a></li>
+        <li><a href="../scenarios/">Scénarios</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main id="contenu">
+<div class="page-head">
+  <div class="wrap">
+    <p class="kicker">XIII · Méthode</p>
+    <h1>Méthode, réflexivité et limites</h1>
+    <p class="lede">Un site qui analyse une stratégie de dissimulation se doit
+    d’être transparent sur la sienne. Voici d’où vient ce texte, qui l’a écrit,
+    ce qu’il ne peut pas savoir, et la liste des erreurs qu’il a trouvées dans ses
+    propres sources.</p>
+    <p class="meta-line">
+      <span>Rédaction : Claude (Anthropic)</span>
+      <span>Mis à jour le <time datetime="2026-08-22">22 août 2026</time></span>
+      <span>≈ 12 min de lecture</span>
+    </p>
+  </div>
+</div>
+
+<div class="wrap layout">
+  <article class="prose">
+
+    <h2 id="auteur">Qui écrit</h2>
+
+    <p>Ce site a été rédigé par <strong>Claude</strong>, un modèle de langage
+    développé par Anthropic, à la demande d’un commanditaire qui a choisi de rester
+    anonyme et dont l’apport est éditorial : le choix du sujet, la constitution du
+    corpus de départ, la décision de publier.</p>
+
+    <p>Cette signature n’est pas une coquetterie. Elle a des conséquences que le
+    lecteur doit pouvoir peser :</p>
+
+    <ul>
+      <li>L’auteur n’a pas assisté aux événements décrits, n’a interrogé aucun
+      acteur, n’a consulté aucune source non publique. Tout ce qui est écrit ici
+      dérive de documents accessibles à quiconque.</li>
+      <li>L’auteur n’a pas d’intérêt personnel dans l’issue du débat belge, ce qui
+      est un avantage, mais aussi pas d’expérience vécue de ce que ces réformes
+      changent dans une vie, ce qui est une limite sérieuse.</li>
+      <li>L’auteur a été entraîné sur un corpus où la production francophone belge
+      critique du nationalisme flamand est plus abondante et plus accessible que la
+      production néerlandophone qui le défend. Ce déséquilibre est structurel et
+      n’est pas entièrement corrigeable.</li>
+      <li>Un modèle de langage produit un texte fluide indépendamment de sa
+      justesse. La fluidité n’est <em>pas</em> un indice de fiabilité. C’est
+      précisément pourquoi ce site multiplie les marqueurs de confiance et les
+      renvois aux sources.</li>
+    </ul>
+
+    <h2 id="corpus">D’où vient le corpus</h2>
+
+    <p>Le point de départ est constitué de trois dossiers analytiques fournis par le
+    commanditaire, portant respectivement sur la stratégie politique de Bart De Wever,
+    sur les vulnérabilités du gouvernement fédéral, et sur les conditions d’une
+    dissolution de l’État belge. Ces documents totalisent une trentaine de milliers de
+    mots et comportent chacun une bibliographie fournie.</p>
+
+    <div class="callout warn">
+      <p><strong>Une observation importante sur ces documents.</strong> Ils présentent
+      toutes les caractéristiques de rapports produits avec assistance d’intelligence
+      artificielle : appels de note numérotés renvoyant à une liste de sources sans
+      correspondance stricte, formules superlatives répétées, et — dans l’un des
+      trois — des marqueurs techniques non nettoyés du type <code>[cite: 27, 37]</code>
+      restés dans le texte. Cela ne les disqualifie pas : leur substance est
+      largement exacte et leur bibliographie est réelle. Mais cela impose de les
+      traiter comme des <em>hypothèses documentées à vérifier</em>, non comme des
+      sources primaires. C’est ce qui a été fait.</p>
+    </div>
+
+    <p>Chaque affirmation datée, chiffrée ou attribuée a été soumise à une
+    vérification par recherche de sources publiques en août 2026. Les affirmations
+    confirmées ont été conservées ; les affirmations contredites ont été corrigées et
+    la correction est publiée ci-dessous ; les affirmations invérifiables ont été soit
+    supprimées, soit conservées avec une mention explicite de leur statut.</p>
+
+    <h2 id="marqueurs">Le système de marqueurs</h2>
+
+    <p>Quatre niveaux, utilisés dans tout le site.</p>
+
+    <div class="tablewrap bleed">
+      <table>
+        <caption>Signification des marqueurs de confiance.</caption>
+        <thead>
+          <tr><th scope="col">Marqueur</th><th scope="col">Signification</th><th scope="col">Critère d’attribution</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><span class="badge b-etabli">Établi</span></th>
+            <td>Fait daté et vérifiable</td>
+            <td>Confirmé par une source primaire ou par plusieurs sources indépendantes concordantes</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="badge b-conteste">Contesté</span></th>
+            <td>Fait attesté, portée disputée</td>
+            <td>L’événement est établi mais sa mesure, son ampleur ou sa signification font l’objet d’un désaccord documenté</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="badge b-interpret">Interprétation</span></th>
+            <td>Lecture proposée</td>
+            <td>Inférence d’analystes identifiés, ou de ce site ; réfutable par d’autres lectures des mêmes faits</td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="badge b-prospectif">Prospectif</span></th>
+            <td>Hypothèse sur l’avenir</td>
+            <td>Assortie autant que possible d’un indicateur permettant de la vérifier ou de l’infirmer</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="corrections">Journal des corrections</h2>
+
+    <p>Treize écarts ont été relevés entre le corpus de départ et l’état des sources
+    publiques en août 2026. Ils sont publiés intégralement, y compris ceux qui
+    affaiblissent la thèse générale du dossier.</p>
+
+    <ol class="notes">
+      <li><strong>Gouvernement bruxellois.</strong> Le corpus datait sa prestation de
+      serment au 8 février 2026 après 613 jours de crise. Elle a eu lieu le
+      <strong>14 février 2026</strong>, après <strong>615 jours</strong>, sous la
+      direction de <strong>Boris Dilliès</strong> (MR) — nom absent du corpus.</li>
+
+      <li><strong>Ampleur des exclusions du chômage.</strong> Le corpus annonçait
+      « près de 115 000 personnes » privées d’allocations entre janvier et avril 2026,
+      puis 60 000 supplémentaires en juillet, et mentionnait ailleurs 184 000 personnes.
+      Les données observées donnent <strong>17 662 exclusions pour la vague de
+      janvier</strong>, dont 3 552 reports vers les CPAS. Les vagues suivantes sont
+      plus importantes, mais l’ordre de grandeur annoncé n’est pas confirmé par les
+      premières mesures.</li>
+
+      <li><strong>Taux de report vers les CPAS.</strong> Le corpus ne le mentionnait
+      pas. Il s’établit à <strong>20,1 %</strong> pour janvier 2026, contre un tiers
+      anticipé par le gouvernement — avec des écarts régionaux considérables.</li>
+
+      <li><strong>Projections macroéconomiques.</strong> Le corpus attribuait à la BNB
+      une croissance de 0,6 % et une dette de 111,3 % du PIB pour 2026. Les projections
+      du Bureau fédéral du Plan de juin 2026 donnent <strong>0,7 %</strong> de
+      croissance, un déficit de <strong>5,1 %</strong> et une dette d’environ
+      <strong>108 %</strong>, en trajectoire vers <strong>122 %</strong> à cinq ans.
+      Les institutions ne publient pas les mêmes séries ; ce site cite désormais
+      systématiquement laquelle.</li>
+
+      <li><strong>Suppression du Sénat.</strong> Le corpus la présentait comme
+      « actée ». Elle est <strong>engagée, non acquise</strong> : la révision de
+      l’article 195 a été votée à la Chambre le 3 juillet 2026 par 96 voix contre 16 et
+      10 abstentions ; sept votes supplémentaires seraient nécessaires, dont plusieurs
+      à la majorité des deux tiers que la coalition n’atteint pas seule.</li>
+
+      <li><strong>Composition de la majorité du 3 juillet.</strong> Absente du corpus,
+      et politiquement significative : le Vlaams Belang, Groen et Anders ont voté avec
+      la majorité ; le PS, Ecolo et DéFI contre ; le PTB s’est abstenu. La ligne de
+      fracture n’est pas celle qu’on attendrait.</li>
+
+      <li><strong>Réforme du Comité de concertation.</strong> Le corpus la décrivait
+      comme « actée pour 2026 ». Au 22 août 2026, il s’agit d’un
+      <strong>projet</strong> discuté publiquement, non d’une réforme entrée en
+      vigueur. La description de son contenu — 6 sièges fédéraux contre 10 fédérés,
+      dont 4 flamands — est en revanche confirmée.</li>
+
+      <li><strong>Réforme des pensions.</strong> Le corpus mentionnait une exigence de
+      42 années de carrière pour un départ à 60 ans. Le texte adopté le 29 mai 2026 est
+      construit autrement : un malus s’applique à qui n’a pas presté au moins 156 jours
+      par an sur 35 années, avec un bonus de 5 % par an pour la poursuite d’activité
+      au-delà de l’âge légal pour les personnes nées à partir de 1973.</li>
+
+      <li><strong>Calendrier du contentieux.</strong> Le corpus prévoyait un arrêt de
+      la Cour constitutionnelle à l’automne 2026. Les commentaires publiés lors de
+      l’adoption évoquent plutôt <strong>2028</strong>. Cette correction déplace
+      entièrement le calendrier du scénario d’implosion juridique.</li>
+
+      <li><strong>Brussels Airport.</strong> Le corpus évoquait des « participations
+      financières massives » sans précision. L’opération est datée d’
+      <strong>octobre 2025</strong> : PMV acquiert pour <strong>2,77 milliards
+      d’euros</strong> 52 % de BAISA, soit environ 39 % de l’aéroport ; le fédéral
+      conserve 25 % via la SFPIM.</li>
+
+      <li><strong>Mobilisations syndicales.</strong> Le corpus s’arrêtait à la
+      manifestation nationale du 12 mars 2026. Une <strong>seconde manifestation
+      nationale a eu lieu le 12 mai 2026</strong>, suivie d’autres journées d’action
+      en juin.</li>
+
+      <li><strong>Étude sur le partage de la dette.</strong> Le corpus mentionnait une
+      convention de recherche ULB / KU Leuven financée par la politique scientifique
+      fédérale, devant établir un état des lieux comptable au 31 décembre 2026. Cette
+      information <strong>n’a pas pu être confirmée</strong> par une source publique
+      indépendante. Elle est conservée sur ce site avec cette mention explicite.</li>
+
+      <li><strong>Pronostics de chute.</strong> Le corpus attribuait une probabilité
+      « très élevée » à un effondrement du gouvernement à l’automne 2026. Au
+      22 août 2026, le gouvernement est en fonction, a fait adopter sa réforme
+      emblématique et franchi une première étape institutionnelle. Cette erreur est
+      commentée en tant que telle dans la rubrique
+      <a href="../scenarios/">Scénarios</a>, parce qu’elle est instructive sur
+      le biais de rupture qui affecte l’analyse politique.</li>
+    </ol>
+
+    <h2 id="biais">Biais assumés</h2>
+
+    <p><strong>Biais de corpus.</strong> Les trois documents fondateurs sont
+    francophones et critiques à l’égard de la N-VA. Une rubrique entière — le
+    <a href="../contre-analyse/">dossier contradictoire</a> — a été écrite pour
+    restituer la thèse adverse dans sa version la plus forte, mais elle ne compense
+    pas entièrement l’asymétrie initiale.</p>
+
+    <p><strong>Biais de langue.</strong> Ce site est en français, et la quasi-totalité
+    de ses sources aussi. La production néerlandophone — presse flamande, littérature
+    académique de la KU Leuven et de l’UGent, publications du Mouvement flamand — n’est
+    représentée qu’indirectement, souvent via des traductions ou des recensions
+    francophones. C’est l’angle mort le plus grave de ce travail, et il redouble
+    exactement le phénomène que le site décrit : l’absence d’espace public commun.</p>
+
+    <p><strong>Biais de rupture.</strong> Toute analyse de crise surestime la
+    probabilité d’une issue, parce qu’une issue fait récit et qu’un enlisement n’en
+    fait pas. Ce site tente de corriger ce biais en accordant explicitement la plus
+    forte plausibilité au scénario le moins narratif — la dissolution suspendue. Il
+    est possible qu’il surcorrige.</p>
+
+    <p><strong>Biais d’intentionnalité.</strong> Décrire une stratégie conduit
+    naturellement à supposer un stratège. Or la politique est faite de contraintes,
+    d’improvisations et de coalitions instables autant que de plans. Chaque fois que
+    ce site emploie le vocabulaire de la stratégie, il désigne une <em>cohérence
+    observable</em> entre des décisions, pas une intention démontrée.</p>
+
+    <h2 id="angles-morts">Ce qui n’est pas traité</h2>
+
+    <ul>
+      <li>La Communauté germanophone, dont le statut dans toute recomposition est
+      systématiquement négligé — y compris ici, et le vote du 3 juillet 2026 a montré
+      que la question de sa représentation est un vrai point de blocage.</li>
+      <li>La dimension migratoire et sécuritaire de la politique de la coalition, qui
+      mériterait un dossier autonome.</li>
+      <li>Les politiques régionales flamande et wallonne, traitées uniquement par
+      leurs interactions avec le fédéral.</li>
+      <li>La politique étrangère et la coopération au développement, mentionnées dans
+      le corpus mais peu vérifiées ici, donc écartées plutôt que reprises sans
+      contrôle.</li>
+      <li>L’opinion des acteurs eux-mêmes, faute d’entretiens.</li>
+    </ul>
+
+    <h2 id="technique">Comment ce site est fabriqué</h2>
+
+    <p>Le site est un ensemble de pages HTML statiques, sans base de données, sans
+    JavaScript et sans dépendance externe : ni police distante, ni CDN, ni traceur, ni
+    cookie. Il n’y a donc aucune collecte de données sur les visiteurs par le site
+    lui-même — l’hébergeur, GitHub Pages, tient ses propres journaux serveur.</p>
+
+    <p>La feuille de style unique s’adapte au thème clair ou sombre du système. Les
+    schémas sont des SVG écrits à la main, avec titre et description accessibles aux
+    lecteurs d’écran. Le balisage sémantique — Schema.org en JSON-LD, Open Graph,
+    hiérarchie de titres, éléments <code>time</code>, <code>dfn</code>,
+    <code>abbr</code>, <code>cite</code> — vise autant les moteurs de recherche que les
+    technologies d’assistance.</p>
+
+    <p>Le code source complet est public. La structure du dépôt, les commandes de
+    déploiement et le fonctionnement de l’assembleur sont documentés dans le fichier
+    <code>README.md</code>.</p>
+
+    <h2 id="licence">Licence, réutilisation, corrections</h2>
+
+    <p>Le contenu rédactionnel est publié sous licence
+    <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" rel="license noopener">Creative
+    Commons Attribution 4.0</a> : il peut être copié, traduit, cité et modifié, y
+    compris à des fins commerciales, à condition d’en indiquer la source. Le code du
+    site est sous licence MIT.</p>
+
+    <p>Ce site sera dépassé. Les données de 2026 seront révisées, les scénarios
+    tranchés, certaines analyses démenties. La date d’arrêté figure sur chaque page et
+    dans les métadonnées de chaque document. Les signalements d’erreur passent par les
+    <em>issues</em> du dépôt GitHub ; les corrections substantielles seront ajoutées
+    au journal ci-dessus plutôt que substituées silencieusement.</p>
+
+    <nav class="pagenav" aria-label="Navigation entre rubriques">
+      <a href="../lexique/"><small>Précédent · XII</small><b>Lexique</b></a>
+      <a href="../sources/"><small>Suivant · XIV</small><b>Bibliographie</b></a>
+    </nav>
+  </article>
+
+  <aside class="aside">
+    <nav class="toc" aria-label="Sommaire de la page">
+      <p>Sur cette page</p>
+      <ol>
+        <li><a href="#auteur">Qui écrit</a></li>
+        <li><a href="#corpus">D’où vient le corpus</a></li>
+        <li><a href="#marqueurs">Le système de marqueurs</a></li>
+        <li><a href="#corrections">Journal des corrections</a></li>
+        <li><a href="#biais">Biais assumés</a></li>
+        <li><a href="#angles-morts">Ce qui n’est pas traité</a></li>
+        <li><a href="#technique">Fabrication du site</a></li>
+        <li><a href="#licence">Licence et corrections</a></li>
+      </ol>
+    </nav>
+  </aside>
+</div>
+</main>
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div>
+      <p class="foot-title">Stratego</p>
+      <p class="muted">Enquête documentaire sur la stratégie d'évaporation de
+      l’État belge. Publié le <time datetime="2026-08-22">22 août 2026</time>,
+      arrêté à l'état des connaissances de cette date.</p>
+      <p class="muted">Rédaction et appareil critique : <strong>Claude (Anthropic)</strong>.
+      Direction éditoriale : anonyme, à sa demande.</p>
+    </div>
+    <div>
+      <p class="foot-title">Autres rubriques</p>
+      <ul class="foot-list">
+          <li><a href="../contre-analyse/">Contre-analyse</a></li>
+          <li><a href="../chronologie/">Chronologie</a></li>
+          <li><a href="../donnees/">Données</a></li>
+          <li><a href="../lexique/">Lexique</a></li>
+          <li><a href="../methode/">Méthode</a></li>
+          <li><a href="../sources/">Sources</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="foot-title">Le site</p>
+      <ul class="foot-list">
+        <li><a href="https://github.com/ouaisfieu/stratego" rel="noopener">Code source (GitHub)</a></li>
+        <li><a href="https://ouaisfieu.github.io/arizona/" rel="noopener">Dossier Arizona (site jumeau)</a></li>
+        <li><a href="https://ouaisfieu.github.io/stratego/feed.xml">Flux RSS</a></li>
+        <li><a href="https://ouaisfieu.github.io/stratego/sitemap.xml">Plan du site (XML)</a></li>
+        <li><a href="https://creativecommons.org/licenses/by/4.0/deed.fr" rel="license noopener">Contenu sous CC&nbsp;BY&nbsp;4.0</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-note">
+    <p><strong>Avertissement.</strong> Ce site analyse des positions politiques
+    en litige. Il décrit des stratégies attribuées à des acteurs publics à
+    partir de sources ouvertes ; il ne prétend pas lire dans leurs intentions.
+    Les distinctions entre <em>fait établi</em>, <em>attribution contestée</em>
+    et <em>interprétation</em> sont signalées page par page et détaillées dans
+    la <a href="https://ouaisfieu.github.io/stratego/methode/">note de méthode</a>.</p>
+  </div>
+</footer>
+</body>
+</html>

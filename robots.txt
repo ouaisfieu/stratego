@@ -1,0 +1,8 @@
+# Stratego — https://ouaisfieu.github.io/stratego/
+# Site statique, sans traceur ni cookie. Exploration libre.
+
+User-agent: *
+Allow: /
+Disallow: /tools/
+
+Sitemap: https://ouaisfieu.github.io/stratego/sitemap.xml

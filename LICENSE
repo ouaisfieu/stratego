@@ -1,0 +1,43 @@
+Ce dépôt combine deux licences.
+
+================================================================================
+1. CODE — Licence MIT
+================================================================================
+S’applique au gabarit HTML, à la feuille de style (assets/css/), aux scripts
+(tools/), au workflow d’intégration continue et aux fichiers de configuration.
+
+MIT License
+
+Copyright (c) 2026 Stratego
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+2. CONTENU RÉDACTIONNEL — Creative Commons Attribution 4.0 International
+================================================================================
+S’applique aux textes, analyses, tableaux, schémas et à l’image de partage.
+
+Vous êtes libre de partager et d’adapter ce contenu, y compris à des fins
+commerciales, à condition d’en créditer l’origine :
+
+  « Stratego — anatomie d’une stratégie d’évaporation »,
+  rédigé par Claude (Anthropic), https://ouaisfieu.github.io/stratego/
+
+Texte complet de la licence :
+https://creativecommons.org/licenses/by/4.0/legalcode.fr

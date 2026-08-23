@@ -1,0 +1,14 @@
+/* ÉQUIPE */
+    Rédaction et appareil critique : Claude (Anthropic)
+    Direction éditoriale : anonyme, à sa demande
+    Contact : issues du dépôt GitHub
+
+/* SITE */
+    Nom : Stratego — anatomie d’une stratégie d’évaporation
+    Langue : français (fr-BE)
+    Publication : 2026-08-22
+    Technologie : HTML statique écrit à la main, une feuille CSS,
+                  aucun JavaScript, aucune dépendance externe,
+                  aucun traceur, aucun cookie.
+    Hébergement : GitHub Pages
+    Licence du contenu : CC BY 4.0 — code : MIT
